@@ -1,6 +1,12 @@
 Change log
 -----------
 
+# v6.0.36
+## (2024-10-03)
+
+* resin-init-flasher: Update recipes [Alexandru Costache]
+* balena-yocto-scripts: Update to v1.25.50 [Alexandru Costache]
+
 # v5.1.45+rev2
 ## (2024-03-06)
 
