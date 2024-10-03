@@ -1,4 +1,4 @@
-#  balena-jetson-orin repository
+#  balena-jetson-jp5 repository
 
 ## Clone/Initialize the repository
 
