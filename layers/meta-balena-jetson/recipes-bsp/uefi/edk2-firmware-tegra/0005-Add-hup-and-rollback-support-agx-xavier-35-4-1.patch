@@ -230,7 +230,7 @@ Index: edk2-tegra/edk2-nvidia/Silicon/NVIDIA/Application/L4TLauncher/L4TLauncher
 +        argsSize = StrSize (BootConfig->BootOptions[BootConfig->NumberOfBootOptions-1].BootArgs);
 +        UpdatedCmdline = AllocateZeroPool (argsSize + StrSize(RootL) + StrSize(BalenaOSRootFs) + 2);
 +        if (NULL == UpdatedCmdline) {
-+            ErrorPrint (L"%a: Failed to allocate memory for updated cmdline %d\r\n", __FUNCTION__);
++            ErrorPrint (L"%a: Failed to allocate memory for updated cmdline\r\n", __FUNCTION__);
 +            return EFI_OUT_OF_RESOURCES;
 +        }
 +
