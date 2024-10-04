@@ -1,4 +1,16 @@
 - commits:
+    - subject: Update balena-os/balena-yocto-scripts to
+      hash: 4bf9e87ab6ffaee33f995f62aaf80438db04dffc
+      body: Update balena-os/balena-yocto-scripts
+      footer:
+        Changelog-entry: Update balena-os/balena-yocto-scripts to
+        changelog-entry: Update balena-os/balena-yocto-scripts to
+      author: balena-renovate[bot]
+      nested: []
+  version: 6.0.36+rev5
+  title: ""
+  date: 2024-10-04T11:07:46.786Z
+- commits:
     - subject: Add GHA workflow to enable manual staging deploys
       hash: e141813d8014f6f135d454bd42e10d36006b1dde
       body: >
