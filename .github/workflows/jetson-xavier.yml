@@ -1,0 +1,24 @@
+name: "Nvidia Jetson Xavier"
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      force-finalize:
+        description: Force finalize of the build (implicitly enables hostapp and S3 deployments)
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  yocto:
+    name: Yocto
+    uses: balena-os/balena-yocto-scripts/.github/workflows/yocto-build-deploy.yml@v1.25.50
+    secrets: inherit
+    with:
+      machine: jetson-xavier
+      # Allow manual workflow runs to force finalize without checking previous test runs
+      force-finalize: ${{ inputs.force-finalize || false }}
+      # This workflow is just for building and then deploying to staging, nothing else
+      # This workflow is just for building and then deploying to staging, nothing else
+      deploy-environment: balena-staging.com
