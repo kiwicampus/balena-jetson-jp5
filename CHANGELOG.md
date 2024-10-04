@@ -1,6 +1,11 @@
 Change log
 -----------
 
+# v6.0.36+rev4
+## (2024-10-04)
+
+* Add GHA workflow to enable manual staging deploys [Ryan Cooke]
+
 # v6.0.36+rev3
 ## (2024-10-03)
 

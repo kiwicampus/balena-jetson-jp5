@@ -1,4 +1,20 @@
 - commits:
+    - subject: Add GHA workflow to enable manual staging deploys
+      hash: e141813d8014f6f135d454bd42e10d36006b1dde
+      body: >
+        This commit adds the workflow files to enable manual builds + deploys to
+        staging from a target branch only.
+      footer:
+        Changelog-entry: Add GHA workflow to enable manual staging deploys
+        changelog-entry: Add GHA workflow to enable manual staging deploys
+        Signed-off-by: Ryan Cooke <ryan@balena.io>
+        signed-off-by: Ryan Cooke <ryan@balena.io>
+      author: Ryan Cooke
+      nested: []
+  version: 6.0.36+rev4
+  title: ""
+  date: 2024-10-04T10:32:16.431Z
+- commits:
     - subject: Update balena-os/github-workflows to v0.0.28
       hash: 5e4dd7bfa36acb158d2e89721e95963a90a483cf
       body: Update balena-os/github-workflows
