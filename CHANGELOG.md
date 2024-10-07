@@ -1,6 +1,21 @@
 Change log
 -----------
 
+# v6.0.38+rev4
+## (2024-10-07)
+
+
+<details>
+<summary> Update balena-yocto-scripts to 485ffc8622f1539031a3af4a78dca4bc20d9a752 [balena-renovate[bot]] </summary>
+
+> ## balena-yocto-scripts-1.25.53
+> ### (2024-10-07)
+> 
+> * fix balena deploy quotes [Ryan Cooke]
+> 
+
+</details>
+
 # v6.0.38+rev3
 ## (2024-10-07)
 
