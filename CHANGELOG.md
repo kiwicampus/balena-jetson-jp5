@@ -1,6 +1,22 @@
 Change log
 -----------
 
+# v6.0.40
+## (2024-10-08)
+
+
+<details>
+<summary> Update layers/meta-balena to ae392ec395ac5c7cff3af205a6dd6ea9b4495e68 [balena-renovate[bot]] </summary>
+
+> ## meta-balena-6.0.40
+> ### (2024-10-08)
+> 
+> * os-helpers-efi: silence secure boot variable checks [Joseph Kogut]
+> * os-helpers-efi: silence od stderr [Joseph Kogut]
+> 
+
+</details>
+
 # v6.0.39+rev6
 ## (2024-10-08)
 
