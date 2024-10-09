@@ -1,4 +1,29 @@
 - commits:
+    - subject: Update balena-yocto-scripts to 83de190aa122be4bd706c855793273dc9f8b7c8c
+      hash: 2204350229686aee7511471963d6672e366f102f
+      body: Update balena-yocto-scripts
+      footer:
+        Changelog-entry: Update balena-yocto-scripts to 83de190aa122be4bd706c855793273dc9f8b7c8c
+        changelog-entry: Update balena-yocto-scripts to 83de190aa122be4bd706c855793273dc9f8b7c8c
+      author: balena-renovate[bot]
+      nested:
+        - commits:
+            - subject: Update actions/upload-artifact action to v4.4.2
+              hash: 247e98873b5e53b5cca43c26ec7953faa2ad9d77
+              body: |
+                Update actions/upload-artifact from 4.4.1 to 4.4.2
+              footer:
+                Change-type: patch
+                change-type: patch
+              author: balena-renovate[bot]
+              nested: []
+          version: balena-yocto-scripts-1.25.59
+          title: ""
+          date: 2024-10-09T09:51:45.026Z
+  version: 6.0.40+rev4
+  title: ""
+  date: 2024-10-09T16:08:24.050Z
+- commits:
     - subject: Update balena-os/balena-yocto-scripts to v1.25.58
       hash: e32feff997c074acac02c911b7665e02587f87eb
       body: Update balena-os/balena-yocto-scripts
