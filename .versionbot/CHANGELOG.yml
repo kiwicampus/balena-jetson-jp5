@@ -1,4 +1,36 @@
 - commits:
+    - subject: Update balena-yocto-scripts to 64d7d9843bf3e1f9439a19fe4556e842b60e01d6
+      hash: 8c4cc77c062053959aa656d4acfd1c7cfadb8020
+      body: Update balena-yocto-scripts
+      footer:
+        Changelog-entry: Update balena-yocto-scripts to 64d7d9843bf3e1f9439a19fe4556e842b60e01d6
+        changelog-entry: Update balena-yocto-scripts to 64d7d9843bf3e1f9439a19fe4556e842b60e01d6
+      author: balena-renovate[bot]
+      nested:
+        - commits:
+            - subject: add review-commit-action to wait for approvals on PRT events
+              hash: 8b1271ac548f0d2a8365181561d791a72145ccb8
+              body: |
+                The existing method of using labels allows for
+                Actions Time Of Check to Time Of Use (TOCTOU) attacks
+                because we do not associate the label with any commit.
+
+                This action requires approvals via reactions on a unique
+                comment generated for each workflow run.
+              footer:
+                Change-type: minor
+                change-type: minor
+                Signed-off-by: Ryan Cooke <ryan@balena.io>
+                signed-off-by: Ryan Cooke <ryan@balena.io>
+              author: Ryan Cooke
+              nested: []
+          version: balena-yocto-scripts-1.27.0
+          title: ""
+          date: 2024-10-23T09:46:23.415Z
+  version: 6.0.47+rev2
+  title: ""
+  date: 2024-10-23T13:11:59.510Z
+- commits:
     - subject: Update balena-os/balena-yocto-scripts to v1.27.0
       hash: cd7377bab3a835491cb83a63662fb6b4f42b41ab
       body: Update balena-os/balena-yocto-scripts
