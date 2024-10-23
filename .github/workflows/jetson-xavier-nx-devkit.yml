@@ -13,7 +13,7 @@ on:
 jobs:
   yocto:
     name: Yocto
-    uses: balena-os/balena-yocto-scripts/.github/workflows/yocto-build-deploy.yml@64d7d9843bf3e1f9439a19fe4556e842b60e01d6 # v1.27.0
+    uses: balena-os/balena-yocto-scripts/.github/workflows/yocto-build-deploy.yml@ded533f1b8c8ff983dbcff2d219851130f8bfc4d # v1.27.2
     secrets: inherit
     with:
       machine: jetson-xavier-nx-devkit
