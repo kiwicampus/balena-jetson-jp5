@@ -1,4 +1,28 @@
 - commits:
+    - subject: Update balena-yocto-scripts to 9ae5d6075069f8e5dec053701e2a1c6173bf78d7
+      hash: aa705c3444fc29dd6a33387a753478883e21d156
+      body: Update balena-yocto-scripts
+      footer:
+        Changelog-entry: Update balena-yocto-scripts to 9ae5d6075069f8e5dec053701e2a1c6173bf78d7
+        changelog-entry: Update balena-yocto-scripts to 9ae5d6075069f8e5dec053701e2a1c6173bf78d7
+      author: balena-renovate[bot]
+      nested:
+        - commits:
+            - subject: Add pull request write permissions for workflow approvals
+              hash: 5e07998255f053630c5cce03057a64ac6ee27802
+              body: ""
+              footer:
+                Change-type: patch
+                change-type: patch
+              author: Kyle Harding
+              nested: []
+          version: balena-yocto-scripts-1.27.3
+          title: ""
+          date: 2024-10-29T15:54:58.766Z
+  version: 6.0.50+rev2
+  title: ""
+  date: 2024-10-29T17:08:21.135Z
+- commits:
     - subject: "jetson-xavier-nx-devkit: Update boot partition index in coffee file"
       hash: 840f62ad52d342241e80ce0efd7c241ef7342c0f
       body: ""
