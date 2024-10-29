@@ -1,6 +1,11 @@
 Change log
 -----------
 
+# v6.0.50+rev1
+## (2024-10-29)
+
+* jetson-xavier-nx-devkit: Update boot partition index in coffee file [Alexandru]
+
 # v6.0.50
 ## (2024-10-27)
 
