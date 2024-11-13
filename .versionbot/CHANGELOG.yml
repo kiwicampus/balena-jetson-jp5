@@ -1,4 +1,43 @@
 - commits:
+    - subject: Update layers/meta-balena to e4b77f04adcf5d949cec850d2a497f7bb46a20b8
+      hash: 8f79c8eccd5fddda62218821fcb8f23e3557fba9
+      body: Update layers/meta-balena
+      footer:
+        Changelog-entry: Update layers/meta-balena to e4b77f04adcf5d949cec850d2a497f7bb46a20b8
+        changelog-entry: Update layers/meta-balena to e4b77f04adcf5d949cec850d2a497f7bb46a20b8
+      author: balena-renovate[bot]
+      nested:
+        - commits:
+            - subject: Update actions/checkout digest to 11bd719
+              hash: a4da39b99f863a49ce9aa608383c7ddf45300b3d
+              body: >
+                Update actions/checkout to
+                11bd71901bbe5b1630ceea73d27597364c9af683
+              footer:
+                Change-type: patch
+                change-type: patch
+              author: balena-renovate[bot]
+              nested: []
+          version: meta-balena-6.1.7
+          title: ""
+          date: 2024-11-13T22:30:24.613Z
+        - commits:
+            - subject: Update balena-os/balena-yocto-scripts action to v1.27.10
+              hash: 18b6a519955e8e66e51948adcd6a6e4ec70c0779
+              body: |
+                Update balena-os/balena-yocto-scripts from v1.25.59 to v1.27.10
+              footer:
+                Change-type: patch
+                change-type: patch
+              author: balena-renovate[bot]
+              nested: []
+          version: meta-balena-6.1.6
+          title: ""
+          date: 2024-11-13T19:27:40.260Z
+  version: 6.1.7
+  title: ""
+  date: 2024-11-13T23:09:52.093Z
+- commits:
     - subject: Update layers/meta-balena to a0f8d0f174767b9e69f35ba3ae7e142c4463d7bf
       hash: 000ef386d0a9813d10748695d9fcc80b6a6b4ea7
       body: Update layers/meta-balena
