@@ -1,6 +1,26 @@
 Change log
 -----------
 
+# v6.1.9
+## (2024-11-15)
+
+
+<details>
+<summary> Update layers/meta-balena to 6dcd159945538c32be87e085f5119a38552810e4 [balena-renovate[bot]] </summary>
+
+> ## meta-balena-6.1.9
+> ### (2024-11-15)
+> 
+> * Update actions/setup-python digest to 0b93645 [balena-renovate[bot]]
+> 
+> ## meta-balena-6.1.8
+> ### (2024-11-15)
+> 
+> * recipes-kernel/linux-firmware: Package Intel AX210 firmware [Alexandru Costache]
+> 
+
+</details>
+
 # v6.1.7
 ## (2024-11-13)
 
