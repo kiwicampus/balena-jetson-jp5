@@ -20,7 +20,7 @@ permissions:
 jobs:
   yocto:
     name: Yocto
-    uses: balena-os/balena-yocto-scripts/.github/workflows/yocto-build-deploy.yml@3eebec1f898038f5bbee0fcccb62b7178db2ef47 # v1.27.16
+    uses: balena-os/balena-yocto-scripts/.github/workflows/yocto-build-deploy.yml@master
     secrets: inherit
     with:
       machine: jetson-xavier
