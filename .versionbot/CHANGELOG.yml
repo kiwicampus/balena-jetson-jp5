@@ -1,4 +1,27 @@
 - commits:
+    - subject: Update contracts to 474ab2d22fa0c6fb82dfb382beb6f14975927166
+      hash: 57ed563a2936b68c18335d6ed3661fcb4de52169
+      body: Update contracts
+      footer:
+        Changelog-entry: Update contracts to 474ab2d22fa0c6fb82dfb382beb6f14975927166
+        changelog-entry: Update contracts to 474ab2d22fa0c6fb82dfb382beb6f14975927166
+      author: balena-renovate[bot]
+      nested:
+        - commits:
+            - subject: "hw.device-type: update logo for nitrogen8M Mini"
+              hash: 3da872b57b5e5ff700410e0ceda9ac5bdac208e7
+              body: ""
+              footer:
+                Change-type: patch
+                change-type: patch
+              author: Jonathan Berger
+          version: contracts-2.0.118
+          title: ""
+          date: 2024-12-04T16:14:00.912Z
+  version: 6.1.19+rev2
+  title: ""
+  date: 2024-12-06T23:06:57.871Z
+- commits:
     - subject: Update balena-yocto-scripts to 5e7e9611dc40a552070baf8a5b56621188e80715
       hash: a2d795aeb75e92f8399d6d51cacb80c922ffd593
       body: Update balena-yocto-scripts
