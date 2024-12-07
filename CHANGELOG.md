@@ -1,6 +1,73 @@
 Change log
 -----------
 
+# v6.1.23
+## (2024-12-07)
+
+
+<details>
+<summary> Update layers/meta-balena to 553a15b444e85d07a389349cdc21156b82c012df [balena-renovate[bot]] </summary>
+
+> ## meta-balena-6.1.23
+> ### (2024-12-06)
+> 
+> 
+> <details>
+> <summary> Update balena-supervisor to v16.9.0 [balena-renovate[bot]] </summary>
+> 
+>> ### balena-supervisor-16.9.0
+>> #### (2024-12-06)
+>> 
+>> * Add ability to stream logs from host services to cloud [Christina Ying Wang]
+>> 
+>> ### balena-supervisor-16.8.0
+>> #### (2024-12-05)
+>> 
+>> * Take update locks for host-config changes [Felipe Lalanne]
+>> 
+>> ### balena-supervisor-16.7.8
+>> #### (2024-11-28)
+>> 
+>> * Clean up remaining locks on state settle [Felipe Lalanne]
+>> * Refactor update-locks implementation [Felipe Lalanne]
+>> * Refactor lockfile module [Felipe Lalanne]
+>> 
+> 
+> </details>
+> 
+> 
+> ## meta-balena-6.1.22
+> ### (2024-12-05)
+> 
+> * os-helpers-fs: add function to erase disks [Alex Gonzalez]
+> 
+> ## meta-balena-6.1.21
+> ### (2024-12-04)
+> 
+> 
+> <details>
+> <summary> Update tests/leviathan digest to 90d1685 [balena-renovate[bot]] </summary>
+> 
+>> ### leviathan-2.31.66
+>> #### (2024-12-04)
+>> 
+>> * Update core/contracts digest to 474ab2d [balena-renovate[bot]]
+>> 
+> 
+> </details>
+> 
+> 
+> ## meta-balena-6.1.20
+> ### (2024-12-04)
+> 
+> * kernel-module-build: update to 3.0.1 [Alex Gonzalez]
+> * tests: secureboot: fix passing of kernel headers version [Alex Gonzalez]
+> * tests: secureboot: add dm devices support in FDE test [Alex Gonzalez]
+> * tests: secureboot: add imx specialization [Alex Gonzalez]
+> 
+
+</details>
+
 # v6.1.19+rev3
 ## (2024-12-07)
 
