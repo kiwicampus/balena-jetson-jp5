@@ -19,58 +19,6 @@ IMAGE_INSTALL:remove = "setup-nv-boot-control-service"
 MACHINE_EXTRA_RRECOMMENDS += " kernel-image-initramfs"
 MACHINE_EXTRA_RDEPENDS += " kernel-image-initramfs"
 
-IMAGE_INSTALL:append:jetson-orin-nano-devkit-nvme = " \
-    parted \
-    gptfdisk \
-    tegra-nvpmodel \
-    tegra-configs-nvstartup \
-    tegra-configs-udev \
-    mtd-utils \
-    tegra-bluetooth \
-    tegra-wifi \
-    tegra-firmware-rtl8822 \
-    l4t-launcher-extlinux \
-    jetson-dtbs \
-    nvidia-display-driver \
-    tegra-nvpower \
-"
-
-IMAGE_INSTALL:append:jetson-agx-orin-devkit = " \
-    parted \
-    gptfdisk \
-    tegra-nvpmodel \
-    tegra-configs-nvstartup \
-    tegra-configs-udev \
-    mtd-utils \
-    tegra-bluetooth \
-    tegra-wifi \
-    tegra-firmware-rtl8822 \
-    l4t-launcher-extlinux \
-    jetson-dtbs \
-    nvidia-display-driver \
-    tegra-nvfancontrol \
-    dtc \
-"
-
-IMAGE_INSTALL:append:jetson-orin-nx-xavier-nx-devkit = " \
-    parted \
-    gptfdisk \
-    tegra-nvpmodel \
-    tegra-configs-nvstartup \
-    tegra-configs-udev \
-    mtd-utils \
-    tegra-bluetooth \
-    tegra-wifi \
-    tegra-firmware-rtl8822 \
-    l4t-launcher-extlinux \
-    jetson-dtbs \
-    nvidia-display-driver \
-    tegra-nvfancontrol \
-    linux-firmware-rtl8168 \
-    kernel-module-realtek \
-    pciutils \
-"
-
 XAVIER_PACKAGES = " \
     tegra-redundant-boot \
     tegra-nv-boot-control-config \

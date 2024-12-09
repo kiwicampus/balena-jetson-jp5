@@ -4,24 +4,14 @@ do_image:balenaos-img[depends] += " tegra-flash-dry:do_deploy"
 
 # Leave some space, just in case future L4Ts add device specific partitions
 # All values are in KiB
-DEVICE_SPECIFIC_SPACE:jetson-agx-orin-devkit = "331776"
-DEVICE_SPECIFIC_SPACE:jetson-orin-nx-xavier-nx-devkit = "331776"
-DEVICE_SPECIFIC_SPACE:jetson-orin-nano-devkit-nvme = "598016"
-DEVICE_SPECIFIC_SPACE:jetson-orin-nx-seeed-j4012 = "598016"
 DEVICE_SPECIFIC_SPACE:jetson-xavier = "921600"
 DEVICE_SPECIFIC_SPACE:jetson-xavier-nx-devkit-emmc = "593920"
 DEVICE_SPECIFIC_SPACE:jetson-xavier-nx-devkit = "593920"
 
-BALENA_BOOT_SIZE:jetson-orin-nx-xavier-nx-devkit = "121440"
-BALENA_BOOT_SIZE:jetson-orin-nano-devkit-nvme = "121440"
 BALENA_BOOT_SIZE:jetson-xavier = "121440"
 BALENA_BOOT_SIZE:jetson-xavier-nx-devkit-emmc = "121440"
 BALENA_BOOT_SIZE:jetson-xavier-nx-devkit = "121440"
 
-IMAGE_ROOTFS_SIZE:jetson-agx-orin-devkit = "1003520"
-IMAGE_ROOTFS_SIZE:jetson-orin-nx-xavier-nx-devkit = "983040"
-IMAGE_ROOTFS_SIZE:jetson-orin-nx-seeed-j4012 = "733184"
-IMAGE_ROOTFS_SIZE:jetson-orin-nano-devkit-nvme = "733184"
 IMAGE_ROOTFS_SIZE:jetson-xavier = "733184"
 IMAGE_ROOTFS_SIZE:jetson-xavier-nx-devkit-emmc = "733184"
 IMAGE_ROOTFS_SIZE:jetson-xavier-nx-devkit = "733184"
@@ -32,8 +22,6 @@ BALENA_BOOT_PARTITION_FILES:append = " \
 "
 
 PART_SPEC_FILE = "partition_specification234.txt"
-PART_SPEC_FILE:jetson-orin-nano-devkit-nvme = "partition_specification234_orin_nano.txt"
-PART_SPEC_FILE:jetson-orin-nx-seeed-j4012 = "partition_specification234_orin_nano.txt"
 PART_SPEC_FILE:jetson-xavier-nx-devkit-emmc = "partition_specification194_nxde.txt"
 PART_SPEC_FILE:jetson-xavier-nx-devkit = "partition_specification194_nxde.txt"
 PART_SPEC_FILE:jetson-xavier = "partition_specification194.txt"
