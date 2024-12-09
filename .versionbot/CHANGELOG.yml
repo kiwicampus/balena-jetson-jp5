@@ -1,4 +1,42 @@
 - commits:
+    - subject: Update balena-yocto-scripts to 86272d84eec20942f5c3252b394ae6b207186710
+      hash: c9581676213d9c5a5ccc754c5741205b10f473c9
+      body: Update balena-yocto-scripts
+      footer:
+        Changelog-entry: Update balena-yocto-scripts to 86272d84eec20942f5c3252b394ae6b207186710
+        changelog-entry: Update balena-yocto-scripts to 86272d84eec20942f5c3252b394ae6b207186710
+      author: balena-renovate[bot]
+      nested:
+        - commits:
+            - subject: "barys: add support for scarthgap"
+              hash: fa730241fc31bf1cda183e4e42f733372948a4fd
+              body: ""
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Joseph Kogut <joseph@balena.io>
+                signed-off-by: Joseph Kogut <joseph@balena.io>
+              author: Joseph Kogut
+              nested: []
+            - subject: "barys: make honister+ syntax default"
+              hash: 8d9f26fb9f11b32aba1b0c364a093415be90b576
+              body: |
+                Rather than require new Yocto versions to be added to
+                NEW_SYNTAX_RELEASES, make the new syntax the default.
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Joseph Kogut <joseph@balena.io>
+                signed-off-by: Joseph Kogut <joseph@balena.io>
+              author: Joseph Kogut
+              nested: []
+          version: balena-yocto-scripts-1.27.20
+          title: ""
+          date: 2024-12-09T09:35:53.011Z
+  version: 6.1.23+rev1
+  title: ""
+  date: 2024-12-09T13:15:59.763Z
+- commits:
     - subject: Update layers/meta-balena to 553a15b444e85d07a389349cdc21156b82c012df
       hash: f8ccafffafd84b3a208f93b483221096501a4b94
       body: Update layers/meta-balena
