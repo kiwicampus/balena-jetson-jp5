@@ -90,7 +90,7 @@ BALENA_CONFIGS[binder] = " \
 
 L4TVER=" l4tver=${L4T_VERSION}"
 
-KERNEL_ARGS = " firmware_class.path=/etc/firmware fbcon=map:0 "
+KERNEL_ARGS = " firmware_class.path=/etc/firmware fbcon=map:0 rootdelay=1 roottimeout=120"
 KERNEL_ARGS:append:jetson-xavier = " video=efifb:off nospectre_bhb "
 KERNEL_ARGS:append:jetson-xavier-nx-devkit-emmc = " video=efifb:off nospectre_bhb "
 KERNEL_ARGS:append:jetson-xavier-nx-devkit = " video=efifb:off nospectre_bhb "
