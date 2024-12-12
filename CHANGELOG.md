@@ -1,6 +1,12 @@
 Change log
 -----------
 
+# v6.1.25
+## (2024-12-12)
+
+* workflows: Run OS and cloud suites for the JP5 Jetson devices [Alexandru Costache]
+* layers/meta-balena: Cleanup Orin code [Alexandru Costache]
+
 # v6.1.23+rev3
 ## (2024-12-12)
 

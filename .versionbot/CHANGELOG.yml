@@ -1,4 +1,33 @@
 - commits:
+    - subject: "workflows: Run OS and cloud suites for the JP5 Jetson devices"
+      hash: 53a57c961e418f5c5302d3a5ec13e057aa053496
+      body: |
+        HUP will not work, since these need takeover from the existing
+        production images, so that will be tested manually for migration.
+
+        We also want to deploy to staging only for the time-being, if any
+        deploys are made.
+      footer:
+        Changelog-entry: "workflows: Run OS and cloud suites for the JP5 Jetson devices"
+        changelog-entry: "workflows: Run OS and cloud suites for the JP5 Jetson devices"
+        Signed-off-by: Alexandru Costache <alexandru@balena.io>
+        signed-off-by: Alexandru Costache <alexandru@balena.io>
+      author: Alexandru Costache
+      nested: []
+    - subject: "layers/meta-balena: Cleanup Orin code"
+      hash: 2719c22a628b7f74e5c66b5467921e95d441231b
+      body: ""
+      footer:
+        Signed-off-by: Alexandru Costache <alexandru@balena.io>
+        signed-off-by: Alexandru Costache <alexandru@balena.io>
+        Changelog-entry: "layers/meta-balena: Cleanup Orin code"
+        changelog-entry: "layers/meta-balena: Cleanup Orin code"
+      author: Alexandru Costache
+      nested: []
+  version: 6.1.25
+  title: ""
+  date: 2024-12-12T12:31:54.366Z
+- commits:
     - subject: Update layers/meta-openembedded to
         7b3fdcdfaab2fc964bbf9eec2cce4e03001fa8cf
       hash: a9cc18f03740a724a445d0be1d73924c228d8a99
