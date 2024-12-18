@@ -1,6 +1,21 @@
 Change log
 -----------
 
+# v6.1.25+rev2
+## (2024-12-18)
+
+
+<details>
+<summary> Update contracts to 82addd5611301f33f17414b22ee6e8ffd534a72c [balena-renovate[bot]] </summary>
+
+> ## contracts-2.0.120
+> ### (2024-12-18)
+> 
+> * add eg5120-imx8mp contract [Ryan Cooke]
+> 
+
+</details>
+
 # v6.1.25+rev1
 ## (2024-12-16)
 
