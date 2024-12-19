@@ -1,4 +1,29 @@
 - commits:
+    - subject: Update contracts to 9383b369225a93451dcb595930106a36f5b2dc45
+      hash: d93c49829282d88d7afc6cc34724d05b9e55586d
+      body: Update contracts
+      footer:
+        Changelog-entry: Update contracts to 9383b369225a93451dcb595930106a36f5b2dc45
+        changelog-entry: Update contracts to 9383b369225a93451dcb595930106a36f5b2dc45
+      author: balena-renovate[bot]
+      nested:
+        - commits:
+            - subject: "hw.device-type: Fix compatibility with existing sdk structure"
+              hash: e234b48207f0a7e82e56fb636d2791ba2a364a68
+              body: ""
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Alexandru Costache <alexandru@balena.io>
+                signed-off-by: Alexandru Costache <alexandru@balena.io>
+              author: Alexandru Costache
+          version: contracts-2.0.121
+          title: ""
+          date: 2024-12-18T20:31:37.211Z
+  version: 6.1.25+rev3
+  title: ""
+  date: 2024-12-19T03:29:35.920Z
+- commits:
     - subject: Update contracts to 82addd5611301f33f17414b22ee6e8ffd534a72c
       hash: 8d97b2d2688843b802d3f4e47117c29cdd46daaa
       body: Update contracts

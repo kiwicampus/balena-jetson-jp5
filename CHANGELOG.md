@@ -1,6 +1,21 @@
 Change log
 -----------
 
+# v6.1.25+rev3
+## (2024-12-19)
+
+
+<details>
+<summary> Update contracts to 9383b369225a93451dcb595930106a36f5b2dc45 [balena-renovate[bot]] </summary>
+
+> ## contracts-2.0.121
+> ### (2024-12-18)
+> 
+> * hw.device-type: Fix compatibility with existing sdk structure [Alexandru Costache]
+> 
+
+</details>
+
 # v6.1.25+rev2
 ## (2024-12-18)
 
