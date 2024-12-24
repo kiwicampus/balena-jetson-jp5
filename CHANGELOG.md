@@ -1,6 +1,12 @@
 Change log
 -----------
 
+# v6.1.26
+## (2024-12-24)
+
+* layers/meta-balena: Update to v6.1.26 [Alexandru Costache]
+* coffe-files: Switch back to old JP4 partition indexes in coffee files [Alexandru Costache]
+
 # v6.1.25+rev4
 ## (2024-12-23)
 

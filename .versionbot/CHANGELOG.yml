@@ -1,4 +1,28 @@
 - commits:
+    - subject: "layers/meta-balena: Update to v6.1.26"
+      hash: bd5c8922ade7dcb818b65fbc83d432385875b814
+      body: ""
+      footer:
+        Changelog-entry: "layers/meta-balena: Update to v6.1.26"
+        changelog-entry: "layers/meta-balena: Update to v6.1.26"
+        Signed-off-by: Alexandru Costache <alexandru@balena.io>
+        signed-off-by: Alexandru Costache <alexandru@balena.io>
+      author: Alexandru Costache
+      nested: []
+    - subject: "coffe-files: Switch back to old JP4 partition indexes in coffee files"
+      hash: 539b6538331d6e35812c8000dbf6adb8e0737bfc
+      body: ""
+      footer:
+        Changelog-entry: "coffe-files: Switch back to old JP4 partition indexes in coffee files"
+        changelog-entry: "coffe-files: Switch back to old JP4 partition indexes in coffee files"
+        Signed-off-by: Alexandru Costache <alexandru@balena.io>
+        signed-off-by: Alexandru Costache <alexandru@balena.io>
+      author: Alexandru Costache
+      nested: []
+  version: 6.1.26
+  title: ""
+  date: 2024-12-24T16:41:58.121Z
+- commits:
     - subject: Update contracts to 8bd56512c375e2f39b532fdb3882a7b5243f7ece
       hash: b6e41d42470a47240fe3c9fb119955e33e140453
       body: Update contracts
