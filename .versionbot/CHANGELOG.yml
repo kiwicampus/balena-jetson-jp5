@@ -1,4 +1,39 @@
 - commits:
+    - subject: Update contracts to b7d2bb88f3e7ca1aca02c0da5f358aaef4308189
+      hash: fbbcb4598e6a1157a10569e81383b98fae4dbdb6
+      body: Update contracts
+      footer:
+        Changelog-entry: Update contracts to b7d2bb88f3e7ca1aca02c0da5f358aaef4308189
+        changelog-entry: Update contracts to b7d2bb88f3e7ca1aca02c0da5f358aaef4308189
+      author: balena-renovate[bot]
+      nested:
+        - commits:
+            - subject: "sw.os+hw.device-type: Add Forecr DSB Orin Nano 8GB and Orin NX 16GB
+                distro tpl files"
+              hash: 62db64e1b73ce5b40f3d672109496ee9b6721c25
+              body: ""
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Alexandru Costache <alexandru@balena.io>
+                signed-off-by: Alexandru Costache <alexandru@balena.io>
+              author: Alexandru Costache
+            - subject: "forecr-dsb-ornx-lan-orin-nx-16gb: Add new public device type"
+              hash: fa485d9a76dcbaf1d2e160889e36fe531d10fc10
+              body: ""
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Alexandru Costache <alexandru@balena.io>
+                signed-off-by: Alexandru Costache <alexandru@balena.io>
+              author: Alexandru Costache
+          version: contracts-2.0.124
+          title: ""
+          date: 2025-01-07T08:35:14.426Z
+  version: 6.1.26+rev2
+  title: ""
+  date: 2025-01-07T10:47:08.732Z
+- commits:
     - subject: Update contracts to 44bbd40a79c8ec2c55db8a1b46cf7ad4c8262d78
       hash: 7dd44e4b4fa35cc10cc99fb2dbddaa51bd17541b
       body: Update contracts
