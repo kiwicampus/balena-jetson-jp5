@@ -1,6 +1,21 @@
 Change log
 -----------
 
+# v6.1.26+rev7
+## (2025-01-28)
+
+
+<details>
+<summary> Update contracts to b042ab7fbdd2b774e8b462f442c1c37fa6da1377 [balena-renovate[bot]] </summary>
+
+> ## contracts-2.0.127
+> ### (2025-01-28)
+> 
+> * Mark alpine 3.21 as the default alpine version [Thodoris Greasidis]
+> 
+
+</details>
+
 # v6.1.26+rev6
 ## (2025-01-28)
 
