@@ -1,6 +1,21 @@
 Change log
 -----------
 
+# v6.1.26+rev6
+## (2025-01-28)
+
+
+<details>
+<summary> Update contracts to c5fdb88202180e205e15e13446df7fe6d903bdd0 [balena-renovate[bot]] </summary>
+
+> ## contracts-2.0.126
+> ### (2025-01-28)
+> 
+> * Add alpine 3.21 [Felipe Lalanne]
+> 
+
+</details>
+
 # v6.1.26+rev5
 ## (2025-01-24)
 

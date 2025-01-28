@@ -1,4 +1,27 @@
 - commits:
+    - subject: Update contracts to c5fdb88202180e205e15e13446df7fe6d903bdd0
+      hash: 497fd4e07b25d92dae1557a113b91ca65261cb18
+      body: Update contracts
+      footer:
+        Changelog-entry: Update contracts to c5fdb88202180e205e15e13446df7fe6d903bdd0
+        changelog-entry: Update contracts to c5fdb88202180e205e15e13446df7fe6d903bdd0
+      author: balena-renovate[bot]
+      nested:
+        - commits:
+            - subject: Add alpine 3.21
+              hash: 53eda7f97f29b7321862c3f057710ba0010aa463
+              body: ""
+              footer:
+                Change-type: patch
+                change-type: patch
+              author: Felipe Lalanne
+          version: contracts-2.0.126
+          title: ""
+          date: 2025-01-28T16:35:59.267Z
+  version: 6.1.26+rev6
+  title: ""
+  date: 2025-01-28T16:45:38.620Z
+- commits:
     - subject: Update layers/meta-openembedded to
         de8681b4a2a101b99dd2c48d89a7de2ccd9a961f
       hash: 1dce3d136e837dfbdb3a54b29bc8a0614093e923
