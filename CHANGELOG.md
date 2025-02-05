@@ -1,6 +1,22 @@
 Change log
 -----------
 
+# v6.1.26+rev8
+## (2025-02-05)
+
+
+<details>
+<summary> Update contracts to 1adfd1c331b3464969cc09a5c7cc3583ef1fe3de [balena-renovate[bot]] </summary>
+
+> ## contracts-2.0.128
+> ### (2025-02-05)
+> 
+> * Improve testing of contracts [Felipe Lalanne]
+> * Remove unused sw.os-image contracts [Felipe Lalanne]
+> 
+
+</details>
+
 # v6.1.26+rev7
 ## (2025-01-28)
 
