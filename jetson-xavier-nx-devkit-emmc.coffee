@@ -10,7 +10,6 @@ module.exports =
 	name: 'Jetson Xavier NX Devkit eMMC'
 	arch: 'aarch64'
 	state: 'released'
-	community: true
 
 	instructions: [
 		BOARD_PREPARE
