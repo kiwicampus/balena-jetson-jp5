@@ -1,4 +1,18 @@
 - commits:
+    - subject: Remove incorrect community flag from jetson-xavier-nx-devkit-emmc
+      hash: 19907655517a927478d7326393d3aefe2bbd6911
+      body: ""
+      footer:
+        Changelog-entry: Remove incorrect community flag from jetson-xavier-nx-devkit-emmc
+        changelog-entry: Remove incorrect community flag from jetson-xavier-nx-devkit-emmc
+        Signed-off-by: Alexandru Costache <alexandru@balena.io>
+        signed-off-by: Alexandru Costache <alexandru@balena.io>
+      author: Alexandru
+      nested: []
+  version: 6.1.26+rev9
+  title: ""
+  date: 2025-02-19T09:52:08.575Z
+- commits:
     - subject: Update contracts to 1adfd1c331b3464969cc09a5c7cc3583ef1fe3de
       hash: 97cf947e5c28e16f7b5fd92d8478b0faaddd3dc7
       body: Update contracts

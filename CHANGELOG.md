@@ -1,6 +1,11 @@
 Change log
 -----------
 
+# v6.1.26+rev9
+## (2025-02-19)
+
+* Remove incorrect community flag from jetson-xavier-nx-devkit-emmc [Alexandru]
+
 # v6.1.26+rev8
 ## (2025-02-05)
 
