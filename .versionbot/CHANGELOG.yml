@@ -1,4 +1,19 @@
 - commits:
+    - subject: Update layers/meta-openembedded to
+        880df90c865b57d38f1ff836fe8900c94434322f
+      hash: 32c77aabc6f86479eecfd2c2dca92974af89f3a5
+      body: Update layers/meta-openembedded
+      footer:
+        Changelog-entry: Update layers/meta-openembedded to
+          880df90c865b57d38f1ff836fe8900c94434322f
+        changelog-entry: Update layers/meta-openembedded to
+          880df90c865b57d38f1ff836fe8900c94434322f
+      author: balena-renovate[bot]
+      nested: []
+  version: 6.1.26+rev10
+  title: ""
+  date: 2025-03-07T17:01:56.876Z
+- commits:
     - subject: Remove incorrect community flag from jetson-xavier-nx-devkit-emmc
       hash: 19907655517a927478d7326393d3aefe2bbd6911
       body: ""
