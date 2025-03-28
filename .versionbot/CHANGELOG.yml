@@ -1,4 +1,30 @@
 - commits:
+    - subject: Update contracts to d07781855aec29f2508be51a04573b7832af8c90
+      hash: c5c45fbe2f53f86c85b71ddfe99900ee1b7b254f
+      body: Update contracts
+      footer:
+        Changelog-entry: Update contracts to d07781855aec29f2508be51a04573b7832af8c90
+        changelog-entry: Update contracts to d07781855aec29f2508be51a04573b7832af8c90
+      author: balena-renovate[bot]
+      nested:
+        - commits:
+            - subject: "hw.device-type: Update links to docs for UEFI version checking"
+              hash: cd8fa068d9e3a1a5d8aeda35829973963fc4e204
+              body: |
+                ... also include the L4T minor revision in the UEFI version
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Alexandru Costache <alexandru@balena.io>
+                signed-off-by: Alexandru Costache <alexandru@balena.io>
+              author: Alexandru Costache
+          version: contracts-2.0.130
+          title: ""
+          date: 2025-03-28T11:36:03.120Z
+  version: 6.1.26+rev14
+  title: ""
+  date: 2025-03-28T15:07:59.191Z
+- commits:
     - subject: Update layers/meta-openembedded to
         084df16f561ebce5aea2ae9241cc500247771ef3
       hash: 77461863211e7aa218a0ff5425757c9988795758
