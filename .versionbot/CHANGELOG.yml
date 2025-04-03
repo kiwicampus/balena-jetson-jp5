@@ -1,4 +1,16 @@
 - commits:
+    - subject: Update contracts to cc4d48c32b077bf233de6ed9e267f893e585cfc5
+      hash: 7c17ce412c7b515dbb89f32c2e02a0f3f63d0143
+      body: Update contracts
+      footer:
+        Changelog-entry: Update contracts to cc4d48c32b077bf233de6ed9e267f893e585cfc5
+        changelog-entry: Update contracts to cc4d48c32b077bf233de6ed9e267f893e585cfc5
+      author: balena-renovate[bot]
+      nested: []
+  version: 6.1.26+rev16
+  title: ""
+  date: 2025-04-03T08:51:51.593Z
+- commits:
     - subject: Update layers/meta-openembedded to
         f8dddbfcbfe502cb71375a7a907e61a92e8d4474
       hash: 1460e2545d0500277d15e2b5aa7be994209b6464

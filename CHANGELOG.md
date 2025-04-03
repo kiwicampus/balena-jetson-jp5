@@ -1,6 +1,11 @@
 Change log
 -----------
 
+# v6.1.26+rev16
+## (2025-04-03)
+
+* Update contracts to cc4d48c32b077bf233de6ed9e267f893e585cfc5 [balena-renovate[bot]]
+
 # v6.1.26+rev15
 ## (2025-04-02)
 
