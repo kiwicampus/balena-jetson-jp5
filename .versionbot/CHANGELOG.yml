@@ -1,4 +1,42 @@
 - commits:
+    - subject: Update contracts to a1e8b75d3ed6714ac854a9d95cd4fc458ca33646
+      hash: 3af314f8bad2536129e8a954989fb8226f2943b0
+      body: Update contracts
+      footer:
+        Changelog-entry: Update contracts to a1e8b75d3ed6714ac854a9d95cd4fc458ca33646
+        changelog-entry: Update contracts to a1e8b75d3ed6714ac854a9d95cd4fc458ca33646
+      author: balena-renovate[bot]
+      nested:
+        - commits:
+            - subject: "imx6ul-var-dart: Update provisioning instructions"
+              hash: acd08a8d8bfdc7bd93a2c7d1196ea158406df315
+              body: >
+                ... to take into account that SW1 and SW2 and switches and not
+                buttons.
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Alexandru Costache <alexandru@balena.io>
+                signed-off-by: Alexandru Costache <alexandru@balena.io>
+              author: Alexandru
+          version: contracts-2.0.132
+          title: ""
+          date: 2025-04-30T21:33:40.156Z
+    - subject: Update layers/meta-openembedded to
+        e42549cef364ae09b3b7c8b64bbeab32e50f1bb0
+      hash: d257344883289221655d703b9c43d3e7126d5539
+      body: Update layers/meta-openembedded
+      footer:
+        Changelog-entry: Update layers/meta-openembedded to
+          e42549cef364ae09b3b7c8b64bbeab32e50f1bb0
+        changelog-entry: Update layers/meta-openembedded to
+          e42549cef364ae09b3b7c8b64bbeab32e50f1bb0
+      author: balena-renovate[bot]
+      nested: []
+  version: 6.1.26+rev18
+  title: ""
+  date: 2025-04-30T22:54:19.544Z
+- commits:
     - subject: Update contracts to 34033e690fc5b1c194114c3aab492036db837bd2
       hash: 867440f264822bb0a624e8c9f18233c3fbf32dcc
       body: Update contracts

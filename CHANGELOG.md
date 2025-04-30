@@ -1,6 +1,23 @@
 Change log
 -----------
 
+# v6.1.26+rev18
+## (2025-04-30)
+
+
+<details>
+<summary> Update contracts to a1e8b75d3ed6714ac854a9d95cd4fc458ca33646 [balena-renovate[bot]] </summary>
+
+> ## contracts-2.0.132
+> ### (Invalid date)
+> 
+> * imx6ul-var-dart: Update provisioning instructions [Alexandru]
+> 
+
+</details>
+
+* Update layers/meta-openembedded to e42549cef364ae09b3b7c8b64bbeab32e50f1bb0 [balena-renovate[bot]]
+
 # v6.1.26+rev17
 ## (2025-04-03)
 
