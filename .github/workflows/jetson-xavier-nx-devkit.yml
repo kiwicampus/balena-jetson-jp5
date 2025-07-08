@@ -61,5 +61,7 @@ jobs:
         }
       # Allow manual workflow runs to force finalize without checking previous test runs
       force-finalize: ${{ inputs.force-finalize || false }}
+      # We don't wan't to publish a finalised release on merge, as we don't have a jp4 -> jp5 migration solution for HUPs yet
+      finalize-on-push-if-tests-passed: false
       # Default to balena-staging.com for workflow dispatch, but balena-cloud.com for other events
       deploy-environment: ${{ inputs.deploy-environment || 'balena-cloud.com' }}
