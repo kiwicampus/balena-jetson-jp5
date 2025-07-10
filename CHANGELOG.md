@@ -1,6 +1,21 @@
 Change log
 -----------
 
+# v6.1.26+rev27
+## (2025-07-10)
+
+
+<details>
+<summary> Update balena-yocto-scripts to a2ebb959fd117c97a6b131adbb524560429eafab [balena-renovate[bot]] </summary>
+
+> ## balena-yocto-scripts-1.36.1
+> ### (2025-07-10)
+> 
+> * Update balena-io/upload-balena-release-asset action to v0.1.4 [balena-renovate[bot]]
+> 
+
+</details>
+
 # v6.1.26+rev26
 ## (2025-07-09)
 
