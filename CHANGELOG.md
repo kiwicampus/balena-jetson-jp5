@@ -1,6 +1,21 @@
 Change log
 -----------
 
+# v6.1.26+rev68
+## (2025-08-18)
+
+
+<details>
+<summary> Update balena-yocto-scripts to 4e7e0f646eb42e00ccb540a092b6086e26be5e00 [balena-renovate[bot]] </summary>
+
+> ## balena-yocto-scripts-1.37.20
+> ### (2025-08-18)
+> 
+> * barys: default to highest priority layers for template paths [Alex Gonzalez]
+> 
+
+</details>
+
 # v6.1.26+rev67
 ## (2025-08-15)
 
