@@ -1,4 +1,43 @@
 - commits:
+    - subject: Update balena-yocto-scripts to 9664fd5cd9042a86b28054958f906210c4e951ea
+      hash: 320e684e143884719c77d2d5389de6e4eaea6fb7
+      body: Update balena-yocto-scripts
+      footer:
+        Changelog-entry: Update balena-yocto-scripts to 9664fd5cd9042a86b28054958f906210c4e951ea
+        changelog-entry: Update balena-yocto-scripts to 9664fd5cd9042a86b28054958f906210c4e951ea
+      author: balena-renovate[bot]
+      nested:
+        - commits:
+            - subject: Update aws/aws-cli to v2.30.7
+              hash: bd2f9b78e7a4cbba3b4554864a21b1989b2deda2
+              body: |
+                Update aws/aws-cli from 2.30.3 to 2.30.7
+              footer:
+                Change-type: patch
+                change-type: patch
+              author: balena-renovate[bot]
+              nested: []
+          version: balena-yocto-scripts-1.38.37
+          title: ""
+          date: 2025-10-07T19:40:24.497Z
+        - commits:
+            - subject: Fix check for present test matrix when checking test results
+              hash: 0518df044f76b0fcab1b1e5613d78489a7d68e3b
+              body: ""
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Ryan Cooke <ryan@balena.io>
+                signed-off-by: Ryan Cooke <ryan@balena.io>
+              author: Ryan Cooke
+              nested: []
+          version: balena-yocto-scripts-1.38.36
+          title: ""
+          date: 2025-10-07T17:35:13.137Z
+  version: 6.1.26+rev108
+  title: ""
+  date: 2025-10-07T20:53:08.321Z
+- commits:
     - subject: Update layers/meta-openembedded to
         96fbc156364fd78530d2bfbe1b8a77789f52997d
       hash: 1c67eaed8c00c2c999eff220caa4db9447aaf39b
