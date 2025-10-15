@@ -45,5 +45,6 @@ XAVIER_PACKAGES = " \
 IMAGE_INSTALL:append:jetson-xavier = "${XAVIER_PACKAGES}"
 IMAGE_INSTALL:append:jetson-xavier-nx-devkit-emmc = "${XAVIER_PACKAGES}"
 IMAGE_INSTALL:append:jetson-xavier-nx-devkit = "${XAVIER_PACKAGES}"
+IMAGE_INSTALL:append:kiwi-xavier = "${XAVIER_PACKAGES}"
 
 IMAGE_INSTALL:remove = "kernel-image-image"

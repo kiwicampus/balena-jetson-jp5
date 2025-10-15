@@ -14,3 +14,5 @@ shared-*/
 
 # dynamically created by the build script
 conf-notes.txt
+
+kiwi_tegra_balena_os

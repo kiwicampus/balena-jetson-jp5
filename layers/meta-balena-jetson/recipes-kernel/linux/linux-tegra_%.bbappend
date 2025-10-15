@@ -8,6 +8,12 @@ SCMVERSION="n"
 SRC_URI:append = " file://0001-fix-kernel-headers-test.patch \
 		file://0001-defconfig-Fix-build-failure.patch \
 "
+
+SRC_URI:append:kiwi-xavier = " \
+    file://tegra194-agx-kiwi-AGX.dtb \
+    file://tegra194-a02-bpmp-p2888-a04-kiwi.dtb \
+"
+
 BALENA_CONFIGS:remove = " mdraid"
 
 BALENA_CONFIGS:append = " debug_kmemleak "
@@ -114,6 +120,11 @@ EOF
 do_deploy[nostamp] = "1"
 do_deploy[postfuncs] += "generate_extlinux_conf"
 do_install[depends] += "${@['', '${INITRAMFS_IMAGE}:do_image_complete'][(d.getVar('INITRAMFS_IMAGE', True) or '') != '' and (d.getVar('TEGRA_INITRAMFS_INITRD', True) or '') == "1"]}"
+
+do_deploy:append:kiwi-xavier() {
+    cp ${WORKDIR}/tegra194-agx-kiwi-AGX.dtb "${DEPLOYDIR}"
+    cp ${WORKDIR}/tegra194-a02-bpmp-p2888-a04-kiwi.dtb "${DEPLOYDIR}"
+}
 
 # These are needed by tegraflash during signing
 OVERLAY_DTB_FILE:append:jetson-agx-orin-devkit = " tegra234-p3737-overlay-pcie.dtbo,tegra234-p3737-audio-codec-rt5658-40pin.dtbo,tegra234-p3737-a03-overlay.dtbo,tegra234-p3737-a04-overlay.dtbo,tegra234-p3737-camera-dual-imx274-overlay.dtbo,AcpiBoot.dtbo,L4TConfiguration.dtbo,L4TRootfsInfo.dtbo,L4TRootfsABInfo.dtbo,L4TRootfsBrokenInfo.dtbo"
