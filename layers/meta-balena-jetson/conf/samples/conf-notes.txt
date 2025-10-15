@@ -10,7 +10,8 @@
 Resin specific images available:
 	balena-image
 
+Nvidia Jetson Xavier                     : $ MACHINE=jetson-xavier bitbake balena-image
 Jetson Xavier NX Devkit eMMC             : $ MACHINE=jetson-xavier-nx-devkit-emmc bitbake balena-image
 Nvidia Jetson Xavier NX Devkit SD-CARD   : $ MACHINE=jetson-xavier-nx-devkit bitbake balena-image
-Nvidia Jetson Xavier                     : $ MACHINE=jetson-xavier bitbake balena-image
+Kiwi Xavier AGX (NEW)                    : $ MACHINE=kiwi-xavier bitbake balena-image
 

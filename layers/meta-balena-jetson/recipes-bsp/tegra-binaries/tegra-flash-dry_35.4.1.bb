@@ -16,6 +16,7 @@ PN = "tegra-flash-dry"
 # The steps for generating any UEFI Capsule can be consulted in the L4T 35.4.1
 # DeveloperGuide, in the UpdateAndRedundancy section > Generating a Multi-Spec Capsule Payload
 UEFI_CAPSULE:jetson-xavier = "TEGRA_BL_T194.Cap.gz"
+UEFI_CAPSULE:kiwi-xavier = "TEGRA_BL_T194.Cap.gz"
 
 # The same applies to the Xavier NX SD and eMMC, and the same capsule
 # can be used for all T194-based devkits. The only difference is that
@@ -25,10 +26,12 @@ UEFI_CAPSULE:jetson-xavier = "TEGRA_BL_T194.Cap.gz"
 UEFI_CAPSULE:jetson-xavier-nx-devkit-emmc = "TEGRA_BL_T194.Cap.gz"
 UEFI_CAPSULE:jetson-xavier-nx-devkit = "TEGRA_BL_T194.Cap.gz"
 
+BOOTBLOB:kiwi-xavier = "bins_agx_xavier.tar.gz"
 BOOTBLOB:jetson-xavier = "bins_agx_xavier.tar.gz"
 BOOTBLOB:jetson-xavier-nx-devkit-emmc = "boot0_xavier_nx_emmc.tar.gz"
 BOOTBLOB:jetson-xavier-nx-devkit = "boot0_xavier_nx_sd.tar.gz"
 
+PARTSPEC:kiwi-xavier = "partition_specification194.txt"
 PARTSPEC:jetson-xavier = "partition_specification194.txt"
 PARTSPEC:jetson-xavier-nx-devkit-emmc = "partition_specification194_nxde.txt"
 PARTSPEC:jetson-xavier-nx-devkit = "partition_specification194_nxde.txt"
@@ -38,6 +41,7 @@ PARTSPEC:jetson-xavier-nx-devkit = "partition_specification194_nxde.txt"
 # is not populated with boot options that contain the GUIDs of the eMMC
 # of the device used for development.
 BOOT0_PREFLASHED = "boot0.img"
+BOOT0_PREFLASHED:kiwi-xavier = "boot0_mmcblk0boot0.img"
 BOOT0_PREFLASHED:jetson-xavier = "boot0_mmcblk0boot0.img"
 BOOT0_PREFLASHED:jetson-xavier-nx-devkit-emmc = "boot0_mtdblock0.img"
 BOOT0_PREFLASHED:jetson-xavier-nx-devkit = "boot0_mtdblock0.img"
@@ -78,6 +82,10 @@ do_install:append:jetson-xavier() {
     install_artifacts_xavier
 }
 
+do_install:append:kiwi-xavier() {
+    install_artifacts_xavier
+}
+
 do_install:append:jetson-xavier-nx-devkit-emmc() {
     install_artifacts_xavier
 }
@@ -90,6 +98,10 @@ do_deploy() {
     rm -rf ${DEPLOY_DIR_IMAGE}/$(basename ${BINARY_INSTALL_PATH}) || true
     mkdir -p ${DEPLOY_DIR_IMAGE}/$(basename ${BINARY_INSTALL_PATH})
     cp -r ${D}/${BINARY_INSTALL_PATH}/* ${DEPLOY_DIR_IMAGE}/$(basename ${BINARY_INSTALL_PATH})
+}
+
+do_deploy:append:kiwi-xavier() {
+    tar xf ${WORKDIR}/${BOOTBLOB} -C ${DEPLOY_DIR_IMAGE}/tegra-binaries/
 }
 
 do_deploy:append:jetson-xavier() {

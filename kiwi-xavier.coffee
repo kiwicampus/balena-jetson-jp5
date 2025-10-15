@@ -31,7 +31,7 @@ module.exports =
 		machine: 'kiwi-xavier'
 		image: 'balena-image'
 		fstype: 'balenaos-img'
-		version: 'yocto-honister'
+		version: 'yocto-kirkstone'
 		deployArtifact: 'balena-image-kiwi-xavier.balenaos-img'
 		compressed: true
 
