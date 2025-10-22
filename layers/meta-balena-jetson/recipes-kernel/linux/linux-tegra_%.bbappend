@@ -8,6 +8,15 @@ SCMVERSION="n"
 SRC_URI:append = " file://0001-fix-kernel-headers-test.patch \
 		file://0001-defconfig-Fix-build-failure.patch \
 "
+
+# Find kiwi-xavier dtb files
+FILESEXTRAPATHS:prepend:kiwi-xavier := "${THISDIR}/files:"
+SRC_URI:append:kiwi-xavier = " \
+    file://tegra194-agx-kiwi-AGX.dts \
+    file://tegra194-a02-bpmp-p2888-a04-kiwi.dts \
+"
+
+
 BALENA_CONFIGS:remove = " mdraid"
 
 BALENA_CONFIGS:append = " debug_kmemleak "
@@ -109,6 +118,11 @@ LABEL primary
       APPEND \${cbootargs} ${kernelRootspec} sdhci_tegra.en_boot_part_access=1 rootwait
 EOF
 
+}
+
+do_configure:append:kiwi-xavier(){
+    cp ${WORKDIR}/*.dt* ${S}/arch/${ARCH}/boot/dts
+    echo 'dtb-kiwi += tegra194-agx-kiwi-AGX.dtb' >> ${S}/arch/${ARCH}/boot/dts/Makefile
 }
 
 do_deploy[nostamp] = "1"
