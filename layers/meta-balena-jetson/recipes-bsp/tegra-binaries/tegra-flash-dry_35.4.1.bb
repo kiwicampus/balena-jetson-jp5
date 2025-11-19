@@ -78,6 +78,13 @@ install_artifacts_xavier() {
     install ${WORKDIR}/${BOOT0_PREFLASHED} ${D}/${BINARY_INSTALL_PATH}/
 }
 
+do_configure:kiwi-xavier() {
+    for dtnode in can1 can2
+    do
+        fdtput -t x tegra194-a02-bpmp-p2888-a04.dtb "/clocks/clock@$dtnode" "allowed-parents" "121" "5b" "13a" "5e"
+    done
+}
+
 do_install:append:jetson-xavier() {
     install_artifacts_xavier
 }
@@ -125,10 +132,18 @@ INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
 
 # need to be redeployed on each build
 # as this path is not cached
+do_configure[nostamp] = "1"
+
+do_configure[depends] += " tegra-binaries:do_preconfigure"
+do_configure[depends] += " virtual/kernel:do_deploy \
+                           virtual/bootloader:do_deploy \
+"
+do_configure[depends] += " cboot:do_deploy"
+
 do_install[nostamp] = "1"
 do_deploy[nostamp] = "1"
 do_unpack[nostamp] = "1"
-deltask do_configure
+
 deltask do_compile
 
 addtask do_deploy before do_package after do_install
