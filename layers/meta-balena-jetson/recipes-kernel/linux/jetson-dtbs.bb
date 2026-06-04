@@ -14,6 +14,11 @@ do_install:jetson-xavier() {
         install -m 0644 "${DEPLOY_DIR_IMAGE}/${DTBNAME}" "${D}/boot/${DTBNAME}"
 }
 
+do_install:kiwi-xavier() {
+        install -d ${D}/boot/
+        install -m 0644 "${DEPLOY_DIR_IMAGE}/tegra194-agx-kiwi-AGX.dtb" "${D}/boot/tegra194-agx-kiwi-AGX.dtb"
+}
+
 do_install:jetson-xavier-nx-devkit-emmc() {
         install -d ${D}/boot/
         install -m 0644 "${DEPLOY_DIR_IMAGE}/${DTBNAME}" "${D}/boot/${DTBNAME}"
