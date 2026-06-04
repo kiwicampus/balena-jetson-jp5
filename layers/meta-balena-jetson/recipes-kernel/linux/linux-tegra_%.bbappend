@@ -9,11 +9,10 @@ SRC_URI:append = " file://0001-fix-kernel-headers-test.patch \
 		file://0001-defconfig-Fix-build-failure.patch \
 "
 
-# Find kiwi-xavier dtb files
-FILESEXTRAPATHS:prepend:kiwi-xavier := "${THISDIR}/files:"
+# Pre-built binary DTBs for kiwi-xavier carrier board
 SRC_URI:append:kiwi-xavier = " \
-    file://tegra194-agx-kiwi-AGX.dts \
-    file://tegra194-a02-bpmp-p2888-a04-kiwi.dts \
+    file://tegra194-agx-kiwi-AGX.dtb \
+    file://tegra194-a02-bpmp-p2888-a04-kiwi.dtb \
 "
 
 
@@ -105,6 +104,9 @@ KERNEL_ARGS:append:jetson-xavier-nx-devkit-emmc = " video=efifb:off nospectre_bh
 KERNEL_ARGS:append:jetson-xavier-nx-devkit = " video=efifb:off nospectre_bhb "
 KERNEL_ARGS += "${@bb.utils.contains('DISTRO_FEATURES','osdev-image',' mminit_loglevel=4 console=tty0 console=ttyTCU0,115200 ',' console=null quiet splash vt.global_cursor_default=0 consoleblank=0',d)} l4tver=${L4T_VERSION} "
 
+KERNEL_FDT = "default"
+KERNEL_FDT:kiwi-xavier = "/boot/tegra194-agx-kiwi-AGX.dtb"
+
 generate_extlinux_conf() {
     mkdir -p ${DEPLOY_DIR_IMAGE}/extlinux || true
     kernelRootspec="${KERNEL_ARGS}" ; cat >${DEPLOY_DIR_IMAGE}/extlinux/extlinux.conf << EOF
@@ -113,16 +115,16 @@ TIMEOUT 10
 MENU TITLE Boot Options
 LABEL primary
       MENU LABEL primary ${KERNEL_IMAGETYPE}
-      FDT default
+      FDT ${KERNEL_FDT}
       LINUX /boot/${KERNEL_IMAGETYPE}
       APPEND \${cbootargs} ${kernelRootspec} sdhci_tegra.en_boot_part_access=1 rootwait
 EOF
 
 }
 
-do_configure:append:kiwi-xavier(){
-    cp ${WORKDIR}/*.dt* ${S}/arch/${ARCH}/boot/dts
-    echo 'dtb-kiwi += tegra194-agx-kiwi-AGX.dtb' >> ${S}/arch/${ARCH}/boot/dts/Makefile
+do_deploy:append:kiwi-xavier() {
+    install -m 0644 ${WORKDIR}/tegra194-agx-kiwi-AGX.dtb ${DEPLOYDIR}/
+    install -m 0644 ${WORKDIR}/tegra194-a02-bpmp-p2888-a04-kiwi.dtb ${DEPLOYDIR}/
 }
 
 do_deploy[nostamp] = "1"
