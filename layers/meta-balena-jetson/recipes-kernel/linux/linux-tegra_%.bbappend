@@ -9,10 +9,10 @@ SRC_URI:append = " file://0001-fix-kernel-headers-test.patch \
 		file://0001-defconfig-Fix-build-failure.patch \
 "
 
-# Pre-built binary DTBs for kiwi-xavier carrier board
+# DTS source files for kiwi-xavier carrier board
 SRC_URI:append:kiwi-xavier = " \
-    file://tegra194-agx-kiwi-AGX.dtb \
-    file://tegra194-a02-bpmp-p2888-a04-kiwi.dtb \
+    file://tegra194-agx-kiwi-AGX.dts \
+    file://tegra194-a02-bpmp-p2888-a04-kiwi.dts \
 "
 
 
@@ -122,9 +122,9 @@ EOF
 
 }
 
-do_deploy:append:kiwi-xavier() {
-    install -m 0644 ${WORKDIR}/tegra194-agx-kiwi-AGX.dtb ${DEPLOYDIR}/
-    install -m 0644 ${WORKDIR}/tegra194-a02-bpmp-p2888-a04-kiwi.dtb ${DEPLOYDIR}/
+do_configure:append:kiwi-xavier(){
+    cp ${WORKDIR}/*.dt* ${S}/arch/${ARCH}/boot/dts
+    echo 'dtb-y += tegra194-agx-kiwi-AGX.dtb' >> ${S}/arch/${ARCH}/boot/dts/Makefile
 }
 
 do_deploy[nostamp] = "1"
