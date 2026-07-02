@@ -79,9 +79,11 @@ install_artifacts_xavier() {
 }
 
 do_configure:kiwi-xavier() {
+    local l4t_bpmp_dtb="${TMPDIR}/work-shared/L4T-native-${PV}-${PR}/Linux_for_Tegra/bootloader/t186ref/tegra194-a02-bpmp-p2888-a04.dtb"
+    cp "${l4t_bpmp_dtb}" "${WORKDIR}/tegra194-a02-bpmp-p2888-a04.dtb"
     for dtnode in can1 can2
     do
-        fdtput -t x tegra194-a02-bpmp-p2888-a04.dtb "/clocks/clock@$dtnode" "allowed-parents" "121" "5b" "13a" "5e"
+        fdtput -t x "${WORKDIR}/tegra194-a02-bpmp-p2888-a04.dtb" "/clocks/clock@${dtnode}" "allowed-parents" "121" "5b" "13a" "5e"
     done
 }
 
@@ -91,6 +93,7 @@ do_install:append:jetson-xavier() {
 
 do_install:append:kiwi-xavier() {
     install_artifacts_xavier
+    install -m 0644 "${WORKDIR}/tegra194-a02-bpmp-p2888-a04.dtb" "${D}/${BINARY_INSTALL_PATH}/"
 }
 
 do_install:append:jetson-xavier-nx-devkit-emmc() {
