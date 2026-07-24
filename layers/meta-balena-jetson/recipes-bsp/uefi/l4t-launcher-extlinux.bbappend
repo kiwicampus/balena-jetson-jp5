@@ -10,6 +10,10 @@ do_deploy() {
     touch ${DEPLOY_DIR_IMAGE}/extra_uEnv.txt
 }
 
+do_deploy:kiwi-xavier() {
+    echo "custom_fdt_file=${DTBFILE}" > ${DEPLOY_DIR_IMAGE}/extra_uEnv.txt
+}
+
 do_compile() {
     if [ -n "${UBOOT_EXTLINUX_FDT}" ]; then
         cp -L ${DEPLOY_DIR_IMAGE}/${DTBFILE} ${B}/
@@ -18,4 +22,4 @@ do_compile() {
 
 FILES:${PN} = "/boot/extlinux/extlinux.conf"
 
-addtask do_deploy after do install
+addtask do_deploy after do_install

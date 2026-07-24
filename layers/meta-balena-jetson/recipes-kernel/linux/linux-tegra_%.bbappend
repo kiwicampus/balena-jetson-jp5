@@ -120,9 +120,28 @@ EOF
 
 }
 
+DTBNAME = "${@os.path.basename(d.getVar('KERNEL_DEVICETREE', True).split()[0])}"
+
+generate_extlinux_conf:kiwi-xavier() {
+    mkdir -p ${DEPLOY_DIR_IMAGE}/extlinux || true
+    kernelRootspec="${KERNEL_ARGS}" ; cat >${DEPLOY_DIR_IMAGE}/extlinux/extlinux.conf << EOF
+DEFAULT primary
+TIMEOUT 10
+MENU TITLE Boot Options
+LABEL primary
+      MENU LABEL primary ${KERNEL_IMAGETYPE}
+      FDT /boot/${DTBNAME}
+      LINUX /boot/${KERNEL_IMAGETYPE}
+      APPEND \${cbootargs} ${kernelRootspec} sdhci_tegra.en_boot_part_access=1 rootwait
+EOF
+
+}
+
 do_configure:append:kiwi-xavier(){
     cp ${WORKDIR}/*.dt* ${S}/arch/${ARCH}/boot/dts
-    echo 'dtb-kiwi += tegra194-agx-kiwi-AGX.dtb' >> ${S}/arch/${ARCH}/boot/dts/Makefile
+
+    echo 'dtb-y += tegra194-a02-bpmp-p2888-a04-kiwi.dtb' >> ${S}/arch/${ARCH}/boot/dts/Makefile
+    echo 'dtb-y += tegra194-agx-kiwi-AGX.dtb' >> ${S}/arch/${ARCH}/boot/dts/Makefile
 }
 
 do_deploy[nostamp] = "1"
