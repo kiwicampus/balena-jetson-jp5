@@ -138,10 +138,17 @@ EOF
 }
 
 do_configure:append:kiwi-xavier(){
-    cp ${WORKDIR}/*.dt* ${S}/arch/${ARCH}/boot/dts
-
+    cp ${WORKDIR}/tegra194-a02-bpmp-p2888-a04-kiwi.dts ${S}/arch/${ARCH}/boot/dts
     echo 'dtb-y += tegra194-a02-bpmp-p2888-a04-kiwi.dtb' >> ${S}/arch/${ARCH}/boot/dts/Makefile
-    echo 'dtb-y += tegra194-agx-kiwi-AGX.dtb' >> ${S}/arch/${ARCH}/boot/dts/Makefile
+
+    # tegra194-agx-kiwi-AGX.dts #includes the stock galen kernel-dts common/
+    # dtsi files by relative path, so it has to live alongside them, not in
+    # the flat top-level dts dir.
+    cp ${WORKDIR}/tegra194-agx-kiwi-AGX.dts ${S}/nvidia/platform/t19x/galen/kernel-dts/
+    # Must land BEFORE the Makefile's own `dtb-y := $(addprefix $(makefile-path)/,$(dtb-y))`
+    # step, or our entry never gets the platform/t19x/galen/kernel-dts/ path prefix the
+    # other entries there get, and kbuild looks for the file one directory level too shallow.
+    sed -i '/^dtb-\$(BUILD_19x_ENABLE) += tegra194-p2888-0001-p2822-0000.dtb$/a dtb-$(BUILD_19x_ENABLE) += tegra194-agx-kiwi-AGX.dtb' ${S}/nvidia/platform/t19x/galen/kernel-dts/Makefile
 }
 
 do_deploy[nostamp] = "1"
