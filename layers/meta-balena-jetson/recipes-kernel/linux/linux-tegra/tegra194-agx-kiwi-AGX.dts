@@ -146,7 +146,15 @@
 		usb2-0 {
 			mode = "host";
 			/delete-property/ usb-role-switch;
-			/delete-node/ port;   /* OTG role-switch endpoint to ucsi_ccg_p0 */
+			/delete-node/ port;   /* OTG role-switch endpoint (usb_role_switch0), referenced by ucsi_ccg below */
 		};
 	};
+};
+
+/* The devkit's USB-C controller (Cypress CCG, i2c c240000 @0x08) is not on the Kiwi carrier
+ * (dmesg: "ucsi_ccg 1-0008: i2c_transfer failed -121"). Disable it and drop its connector, whose
+ * endpoint references the usb2-0 role-switch port removed above. */
+&ucsi_ccg {
+	status = "disabled";
+	/delete-node/ connector@0;
 };
