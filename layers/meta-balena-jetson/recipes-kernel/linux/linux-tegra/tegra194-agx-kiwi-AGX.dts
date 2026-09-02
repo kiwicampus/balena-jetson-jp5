@@ -133,3 +133,20 @@
 				  <&bpmp_clks TEGRA194_CLK_PLLA_OUT0>,
 				  <&bpmp_clks TEGRA194_CLK_PLLA_OUT0>;
 };
+
+/*
+ * USB: the Kiwi CM+ carrier wires all four USB2 pads as HOST ports (verified in the
+ * working JP4 kiwi DTB: usb2-0..3 mode="host" with vbus supplies). The stock devkit
+ * dtsi leaves usb2-0 as an OTG port with a role switch, so a camera plugged there
+ * never enumerates and introspection.sh (which reads usb2-0/mode) misdetects the
+ * board as a devkit. Force host mode and drop the OTG connector glue.
+ */
+&xusb_padctl {
+	ports {
+		usb2-0 {
+			mode = "host";
+			/delete-property/ usb-role-switch;
+			/delete-node/ port;   /* OTG role-switch endpoint to ucsi_ccg_p0 */
+		};
+	};
+};
