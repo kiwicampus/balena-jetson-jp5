@@ -110,6 +110,9 @@ KERNEL_ARGS += "${@bb.utils.contains('DISTRO_FEATURES','osdev-image',' mminit_lo
 KERNEL_ARGS:remove:kiwi-xavier = "console=null quiet splash"
 KERNEL_ARGS:append:kiwi-xavier = " console=ttyTCU0,115200 loglevel=7"
 
+# JP5 bring-up variant
+SRC_URI:append:kiwi-xavier = " file://defconfig"
+
 generate_extlinux_conf() {
     mkdir -p ${DEPLOY_DIR_IMAGE}/extlinux || true
     kernelRootspec="${KERNEL_ARGS}" ; cat >${DEPLOY_DIR_IMAGE}/extlinux/extlinux.conf << EOF
