@@ -105,6 +105,11 @@ KERNEL_ARGS:append:jetson-xavier-nx-devkit-emmc = " video=efifb:off nospectre_bh
 KERNEL_ARGS:append:jetson-xavier-nx-devkit = " video=efifb:off nospectre_bhb "
 KERNEL_ARGS += "${@bb.utils.contains('DISTRO_FEATURES','osdev-image',' mminit_loglevel=4 console=tty0 console=ttyTCU0,115200 ',' console=null quiet splash vt.global_cursor_default=0 consoleblank=0',d)} l4tver=${L4T_VERSION} "
 
+# JP5 bring-up: keep the kernel console on the debug UART even on production images, so panics and
+# resets leave a trace on the harness console capture (balenaOS default is console=null quiet splash).
+KERNEL_ARGS:remove:kiwi-xavier = "console=null quiet splash"
+KERNEL_ARGS:append:kiwi-xavier = " console=ttyTCU0,115200 loglevel=7"
+
 generate_extlinux_conf() {
     mkdir -p ${DEPLOY_DIR_IMAGE}/extlinux || true
     kernelRootspec="${KERNEL_ARGS}" ; cat >${DEPLOY_DIR_IMAGE}/extlinux/extlinux.conf << EOF
