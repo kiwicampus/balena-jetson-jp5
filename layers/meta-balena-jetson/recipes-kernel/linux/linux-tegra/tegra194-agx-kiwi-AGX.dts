@@ -158,3 +158,10 @@
 	status = "disabled";
 	/delete-node/ connector@0;
 };
+
+/* USB device mode (xudc) shared the usb2-0 pad with the OTG role switch removed above; with usb2-0 as a
+ * plain host port it can never bind and only clutters /sys/kernel/debug/devices_deferred (3550000.xudc).
+ * The Kiwi carrier never acts as a USB device (recovery mode is handled by the boot ROM, not by xudc). */
+&tegra_xudc {
+	status = "disabled";
+};
