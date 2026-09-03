@@ -3,29 +3,31 @@ Date: Wed, 3 Sep 2026 12:00:00 +0000
 Subject: [PATCH] ASoC: tegra210_adsp: do not rename an already registered platform device
 
 tegra210_adsp_audio_platform_probe() calls dev_set_name() on a device that
-of_platform_populate() (tegra_aconnect_probe) already registered. dev_set_name()
-kfree()s the old kobject name while other CPUs may still read it: bus_for_each_dev()
--> __driver_attach() -> platform_match() -> strcmp(dev_name(dev), ...). With balenaOS
-udev loading modules in parallel this races at ~47 s after boot on the Kiwi Xavier
-(KASAN: use-after-free in strcmp, freed by tegra210_adsp_audio_probe) and later shows up
-as random heap corruption panics (__kmalloc, rw_verify_area, unregister_fair_sched_group).
-
-Only set the name when it actually differs; the DT node is already called adsp_audio.
+of_platform_populate() (tegra_aconnect_probe) already registered as "adsp_audio".
+dev_set_name() kfree()s the old kobject name while other CPUs may still read it:
+bus_for_each_dev() -> __driver_attach() -> platform_match() -> strcmp(dev_name(dev), ...).
+With balenaOS udev loading modules in parallel this races at ~47 s after boot on the
+Kiwi Xavier (KASAN: use-after-free in strcmp, freed by tegra210_adsp_audio_probe) and
+later shows up as random heap corruption panics (__kmalloc, rw_verify_area,
+unregister_fair_sched_group). Renaming a registered device is not allowed; keep the
+DT-derived name. Nothing matches this device by its runtime name (OF compatible is used).
 ---
- nvidia/sound/soc/tegra-alt/tegra210_adsp_alt.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ nvidia/sound/soc/tegra-alt/tegra210_adsp_alt.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
 --- a/nvidia/sound/soc/tegra-alt/tegra210_adsp_alt.c
 +++ b/nvidia/sound/soc/tegra-alt/tegra210_adsp_alt.c
-@@ -4478,7 +4478,10 @@
+@@ -4478,10 +4478,9 @@
  
  	pr_info("tegra210_adsp_audio_platform_probe: platform probe started\n");
  
 -	if (dev_set_name(&pdev->dev, "%s", DRV_NAME_ADSP) < 0) {
-+	/* Renaming a registered device frees its old name under readers
-+	 * (platform_match/strcmp): only do it if the name really differs. */
-+	if (strcmp(dev_name(&pdev->dev), DRV_NAME_ADSP) &&
-+	    dev_set_name(&pdev->dev, "%s", DRV_NAME_ADSP) < 0) {
- 		dev_err(&pdev->dev, "error in setting adsp device name\n");
- 		return -ENODEV;
- 	}
+-		dev_err(&pdev->dev, "error in setting adsp device name\n");
+-		return -ENODEV;
+-	}
++	/* Do not dev_set_name() a registered device: it frees the old name under
++	 * concurrent readers (platform_match/strcmp) -> use-after-free. Keep the
++	 * DT-derived name "adsp_audio". */
+ 
+ 	match = of_match_device(tegra210_adsp_audio_of_match, &pdev->dev);
+ 	if (!match) {
