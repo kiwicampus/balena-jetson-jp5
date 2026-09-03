@@ -111,7 +111,7 @@ KERNEL_ARGS:remove:kiwi-xavier = "console=null quiet splash"
 KERNEL_ARGS:append:kiwi-xavier = " console=ttyTCU0,115200 loglevel=7"
 
 # JP5 bring-up: fix the tegra210 ADSP device rename use-after-free (KASAN, 2026-09-03)
-SRC_URI:append:kiwi-xavier = " file://0001-tegra210-adsp-do-not-rename-registered-device.patch file://0002-tegra210-adsp-sound-soc-tegra-do-not-rename-device.patch"
+SRC_URI:append:kiwi-xavier = " file://0001-tegra210-adsp-do-not-rename-registered-device.patch file://0002-tegra210-adsp-sound-soc-tegra-do-not-rename-device.patch file://0003-bluedroid_pm-do-not-kfree-embedded-wakeup-source.patch"
 
 generate_extlinux_conf() {
     mkdir -p ${DEPLOY_DIR_IMAGE}/extlinux || true
