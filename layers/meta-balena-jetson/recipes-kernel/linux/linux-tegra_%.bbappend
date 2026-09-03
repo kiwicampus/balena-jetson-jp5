@@ -113,7 +113,7 @@ KERNEL_ARGS:append:kiwi-xavier = " console=ttyTCU0,115200 loglevel=7"
 # Kernel fix (KASAN, 2026-09-03): tegra210_adsp must not rename its registered platform device; the
 # freed name left platform_device.name dangling -> use-after-free in platform_match -> heap corruption
 # panics ~80-100 s after boot. 0002 patches the file the kernel builds; 0001 the tegra-alt duplicate.
-SRC_URI:append:kiwi-xavier = " file://0001-tegra210-adsp-do-not-rename-registered-device.patch file://0002-tegra210-adsp-sound-soc-tegra-do-not-rename-device.patch"
+SRC_URI:append:kiwi-xavier = " file://0001-tegra210-adsp-do-not-rename-registered-device.patch file://0002-tegra210-adsp-sound-soc-tegra-do-not-rename-device.patch file://0003-bluedroid_pm-do-not-kfree-embedded-wakeup-source.patch"
 
 generate_extlinux_conf() {
     mkdir -p ${DEPLOY_DIR_IMAGE}/extlinux || true
