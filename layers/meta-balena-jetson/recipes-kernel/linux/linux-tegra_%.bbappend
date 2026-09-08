@@ -131,7 +131,21 @@ KERNEL_ARGS += "${@bb.utils.contains('DISTRO_FEATURES','osdev-image',' mminit_lo
 # JP5 bring-up: keep the kernel console on the debug UART even on production images, so panics and
 # resets leave a trace on the harness console capture (balenaOS default is console=null quiet splash).
 KERNEL_ARGS:remove:kiwi-xavier = "console=null quiet splash"
-KERNEL_ARGS:append:kiwi-xavier = " console=ttyTCU0,115200 loglevel=7"
+
+# kpti=off: KPTI costs ~2150 cycles on EVERY syscall on this CPU. Measured on 4U081 with a
+# getppid/invalid-syscall microbenchmark using thread CPU time, over three separate boots:
+# an invalid syscall (pure exception entry+exit, no handler work) costs 2691 ns / 6097 cycles
+# with KPTI on and 1752 ns / 3968 cycles with it off. Every ROS node is syscall heavy, so this
+# is a flat tax on the whole stack.
+#
+# This costs us no Meltdown protection. dmesg says "kernel page table isolation forced ON by
+# KASLR", and booting with nokaslr alone makes the kernel decline to enable KPTI at all - so
+# the CPU is either in the kernel's kpti_safe_list or reports ID_AA64PFR0_EL1.CSV3=1, i.e. not
+# susceptible. KPTI was only hardening KASLR against address-leak timing attacks. We keep KASLR
+# (hence kpti=off rather than nokaslr) and give up only that hardening of it.
+#
+# Spectre is NOT worth disabling: booting with mitigations=off moved the same benchmark by 0.1%.
+KERNEL_ARGS:append:kiwi-xavier = " console=ttyTCU0,115200 loglevel=7 kpti=off"
 
 # Kernel fix (KASAN, 2026-09-03): tegra210_adsp must not rename its registered platform device; the
 # freed name left platform_device.name dangling -> use-after-free in platform_match -> heap corruption
