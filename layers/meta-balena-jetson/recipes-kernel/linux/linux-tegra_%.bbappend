@@ -31,28 +31,27 @@ BALENA_CONFIGS[debug_kmemleak] = " \
     CONFIG_PSTORE=n \
 "
 
-# Kernel-entry cost: the CONFIG_FUNCTION_TRACER=n above does NOT take effect, because
-# CONFIG_STACK_TRACER and CONFIG_FUNCTION_GRAPH_TRACER both `select FUNCTION_TRACER` in
-# Kconfig, and a select overrides an explicit =n. The shipped kernel really runs:
-#     CONFIG_FUNCTION_TRACER=y
-#     CONFIG_FUNCTION_GRAPH_TRACER=y
-#     CONFIG_STACK_TRACER=y
-#     # CONFIG_DYNAMIC_FTRACE is not set     <-- the expensive part
-# Without DYNAMIC_FTRACE ftrace cannot nop-patch its call sites, so EVERY kernel function
-# carries an unconditional _mcount call for tracing nobody uses (current_tracer: nop).
-# Measured on 4U081: getppid costs 3.13 CPU us/call vs 0.363/0.368 on two JP4 robots
-# (which have FUNCTION_TRACER unset entirely) - a ~8x kernel-entry tax. ROS 2 loopback DDS
-# is one recvmsg per subscriber per message, so that tax lands almost linearly on messaging;
-# 90% of the JP5-vs-JP4 CPU gap sits in cyclonedds' recvUC thread.
+# Note on the CONFIG_FUNCTION_TRACER=n above: it does NOT take effect. CONFIG_STACK_TRACER
+# and CONFIG_FUNCTION_GRAPH_TRACER both `select FUNCTION_TRACER`, and a select overrides an
+# explicit =n. The shipped kernel really runs FUNCTION_TRACER=y, FUNCTION_GRAPH_TRACER=y,
+# STACK_TRACER=y and "# CONFIG_DYNAMIC_FTRACE is not set". To actually disable it you have to
+# unset CONFIG_STACK_TRACER first. Left as-is for now because it is not where the cost was.
 #
-# Rather than fight the selects, turn on the cheap variant: DYNAMIC_FTRACE is not selected
-# by anything, and with it the call sites are patched to NOPs at boot, so tracing stays
-# available at ~zero steady-state cost. CONFIG_HAVE_DYNAMIC_FTRACE=y on this kernel, so
-# this is purely a config oversight, not a platform limitation.
-BALENA_CONFIGS:append = " ftrace_dynamic"
-BALENA_CONFIGS[ftrace_dynamic] = " \
-    CONFIG_DYNAMIC_FTRACE=y \
-"
+# CONFIG_DYNAMIC_FTRACE is deliberately NOT enabled.
+#
+# It was tried (commit 0e22581) on the theory that FUNCTION_TRACER=y without DYNAMIC_FTRACE
+# leaves an unconditional _mcount call in every kernel function. Measured on 4U081 it bought
+# exactly nothing: an invalid syscall cost 1752 ns with static ftrace and 1749 ns with
+# dynamic, i.e. inside noise. The real costs turned out to be KPTI and EL2/VHE, both handled
+# below.
+#
+# It is worse than neutral, because it changes struct module (adding the ftrace_callsites
+# fields), which changes the module_layout symbol CRC. With CONFIG_MODVERSIONS=y that
+# invalidates every out-of-tree .ko built against the previous kernel, and the prebuilt
+# v4l2loopback modules in rover/configs/kernels/ failed to load on kiwibot4F042 with
+# "v4l2loopback: disagrees about version of symbol module_layout".
+#
+# Do not re-enable it without rebuilding and committing every .ko in rover/configs/kernels/.
 
 # Run the kernel at EL1 instead of EL2 by disabling VHE. CONFIRMED on hardware:
 # this removes the L1D wipe, cuts a syscall from 3937 to 1315 cycles, and takes total
