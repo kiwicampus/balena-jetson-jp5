@@ -54,6 +54,30 @@ BALENA_CONFIGS[ftrace_dynamic] = " \
     CONFIG_DYNAMIC_FTRACE=y \
 "
 
+# EXPERIMENT: run the kernel at EL1 instead of EL2 by disabling VHE.
+#
+# On this Carmel silicon, an EL0->EL2 exception invalidates the whole L1 data cache.
+# Measured with the PMU on 4U081 (JP5, kernel at EL2 via VHE) against kiwibot4E290
+# (JP4, kernel at EL1, no VHE, no KVM), same MIDR 0x4e0f0040, same 2.2656 GHz.
+# A 32 KB userspace working set (512 lines) walked in a loop, L1D_CACHE_REFILL per pass:
+#
+#                        no syscall   1 syscall per pass
+#   JP4 (EL1)                   1.2                  1.3   <- cache untouched
+#   JP5 (EL2/VHE)               0.9                587.7   <- every line lost
+#
+# Cycles per pass go 650->1526 on JP4 but 604->6113 on JP5. Per invalid syscall the
+# PMU shows L1D_CACHE_REFILL 0.1 (JP4) vs 73.2 (JP5) and STALL_BACKEND 57 vs 1991
+# cycles, while L1D_TLB_REFILL is the same on both (12.4 vs 13.4) - so it is the L1
+# data cache specifically, not the TLB, not the instruction side, not more code.
+#
+# JP4 ships "# CONFIG_ARM64_VHE is not set", which is why it does not pay this. We do
+# not run KVM guests on the robot, so EL2 buys us nothing. With VHE off the kernel
+# boots at EL1 and KVM, if ever used, falls back to nVHE.
+BALENA_CONFIGS:append = " novhe"
+BALENA_CONFIGS[novhe] = " \
+    CONFIG_ARM64_VHE=n \
+"
+
 BALENA_CONFIGS:append = " compat"
 BALENA_CONFIGS[compat] = " \
                 CONFIG_COMPAT=y \
