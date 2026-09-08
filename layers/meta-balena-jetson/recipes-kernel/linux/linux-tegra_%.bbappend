@@ -31,6 +31,29 @@ BALENA_CONFIGS[debug_kmemleak] = " \
     CONFIG_PSTORE=n \
 "
 
+# Kernel-entry cost: the CONFIG_FUNCTION_TRACER=n above does NOT take effect, because
+# CONFIG_STACK_TRACER and CONFIG_FUNCTION_GRAPH_TRACER both `select FUNCTION_TRACER` in
+# Kconfig, and a select overrides an explicit =n. The shipped kernel really runs:
+#     CONFIG_FUNCTION_TRACER=y
+#     CONFIG_FUNCTION_GRAPH_TRACER=y
+#     CONFIG_STACK_TRACER=y
+#     # CONFIG_DYNAMIC_FTRACE is not set     <-- the expensive part
+# Without DYNAMIC_FTRACE ftrace cannot nop-patch its call sites, so EVERY kernel function
+# carries an unconditional _mcount call for tracing nobody uses (current_tracer: nop).
+# Measured on 4U081: getppid costs 3.13 CPU us/call vs 0.363/0.368 on two JP4 robots
+# (which have FUNCTION_TRACER unset entirely) - a ~8x kernel-entry tax. ROS 2 loopback DDS
+# is one recvmsg per subscriber per message, so that tax lands almost linearly on messaging;
+# 90% of the JP5-vs-JP4 CPU gap sits in cyclonedds' recvUC thread.
+#
+# Rather than fight the selects, turn on the cheap variant: DYNAMIC_FTRACE is not selected
+# by anything, and with it the call sites are patched to NOPs at boot, so tracing stays
+# available at ~zero steady-state cost. CONFIG_HAVE_DYNAMIC_FTRACE=y on this kernel, so
+# this is purely a config oversight, not a platform limitation.
+BALENA_CONFIGS:append = " ftrace_dynamic"
+BALENA_CONFIGS[ftrace_dynamic] = " \
+    CONFIG_DYNAMIC_FTRACE=y \
+"
+
 BALENA_CONFIGS:append = " compat"
 BALENA_CONFIGS[compat] = " \
                 CONFIG_COMPAT=y \
