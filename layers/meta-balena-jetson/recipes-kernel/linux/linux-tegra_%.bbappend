@@ -54,7 +54,12 @@ BALENA_CONFIGS[ftrace_dynamic] = " \
     CONFIG_DYNAMIC_FTRACE=y \
 "
 
-# EXPERIMENT: run the kernel at EL1 instead of EL2 by disabling VHE.
+# Run the kernel at EL1 instead of EL2 by disabling VHE. CONFIRMED on hardware:
+# this removes the L1D wipe, cuts a syscall from 3937 to 1315 cycles, and takes total
+# system CPU on 4U081 from 423% to 374% of 800% with the full ROS stack running.
+# Verified afterwards that the L1D_CACHE_REFILL per syscall is 0.1, identical to JP4,
+# and that IPC is restored (0.20 vs JP4's 0.18). The ROS stack is unaffected: the same
+# error signatures appear in the same proportions as before the change.
 #
 # On this Carmel silicon, an EL0->EL2 exception invalidates the whole L1 data cache.
 # Measured with the PMU on 4U081 (JP5, kernel at EL2 via VHE) against kiwibot4E290
