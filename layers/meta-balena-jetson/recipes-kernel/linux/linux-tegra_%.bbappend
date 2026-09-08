@@ -52,6 +52,15 @@ BALENA_CONFIGS[debug_kmemleak] = " \
 # "v4l2loopback: disagrees about version of symbol module_layout".
 #
 # Do not re-enable it without rebuilding and committing every .ko in rover/configs/kernels/.
+#
+# It has to be set =n EXPLICITLY: Kconfig has "config DYNAMIC_FTRACE ... default y" and
+# FUNCTION_TRACER=y is forced on by the STACK_TRACER/FUNCTION_GRAPH_TRACER selects above, so
+# merely dropping the BALENA_CONFIGS group leaves it enabled (verified: a build with the group
+# removed still produced CONFIG_DYNAMIC_FTRACE=y).
+BALENA_CONFIGS:append = " no_dynamic_ftrace"
+BALENA_CONFIGS[no_dynamic_ftrace] = " \
+    CONFIG_DYNAMIC_FTRACE=n \
+"
 
 # Run the kernel at EL1 instead of EL2 by disabling VHE. CONFIRMED on hardware:
 # this removes the L1D wipe, cuts a syscall from 3937 to 1315 cycles, and takes total
