@@ -31,6 +31,30 @@ BALENA_CONFIGS[debug_kmemleak] = " \
     CONFIG_PSTORE=n \
 "
 
+# Take ftrace out properly. CONFIG_FUNCTION_TRACER=n above never applied on its own, because
+# STACK_TRACER and FUNCTION_GRAPH_TRACER both `select FUNCTION_TRACER` and a select beats an
+# explicit =n. Unset the selecters first and FUNCTION_TRACER really goes, taking
+# DYNAMIC_FTRACE and FTRACE_MCOUNT_RECORD with it.
+#
+# Why this matters beyond the _mcount calls: CONFIG_FTRACE_MCOUNT_RECORD adds the
+# ftrace_callsites fields to struct module, which changes the module_layout symbol CRC. With
+# CONFIG_MODVERSIONS=y that invalidates every out-of-tree .ko built against a kernel with a
+# different answer, which is why rover/configs/kernels/ ended up carrying two v4l2loopback
+# builds and rover/balena_start.sh had to probe
+# /sys/kernel/debug/tracing/enabled_functions to pick one. With ftrace gone there is one
+# kernel and one module.
+#
+# This is NOT the same as CONFIG_DYNAMIC_FTRACE=n on its own, which does not link at all:
+# FUNCTION_TRACER=y without DYNAMIC_FTRACE leaves absolute R_AARCH64_ABS32 relocations
+# against __crc_* symbols, and vmlinux is a PIE because CONFIG_RELOCATABLE=y. See 10c309c.
+BALENA_CONFIGS:append = " no_ftrace"
+BALENA_CONFIGS[no_ftrace] = " \
+    CONFIG_STACK_TRACER=n \
+    CONFIG_FUNCTION_GRAPH_TRACER=n \
+    CONFIG_FUNCTION_PROFILER=n \
+    CONFIG_FUNCTION_TRACER=n \
+"
+
 # Note on the CONFIG_FUNCTION_TRACER=n above: it does NOT take effect. CONFIG_STACK_TRACER
 # and CONFIG_FUNCTION_GRAPH_TRACER both `select FUNCTION_TRACER`, and a select overrides an
 # explicit =n. The shipped kernel really runs FUNCTION_TRACER=y, FUNCTION_GRAPH_TRACER=y,
