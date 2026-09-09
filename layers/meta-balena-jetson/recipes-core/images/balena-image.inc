@@ -48,11 +48,3 @@ IMAGE_INSTALL:append:jetson-xavier-nx-devkit-emmc = "${XAVIER_PACKAGES}"
 IMAGE_INSTALL:append:jetson-xavier-nx-devkit = "${XAVIER_PACKAGES}"
 
 IMAGE_INSTALL:remove = "kernel-image-image"
-
-# Kiwibot: ship v4l2loopback built by this same bitbake run, so it always matches the kernel.
-# CONFIG_MODVERSIONS=y makes the kernel reject any module whose module_layout CRC disagrees,
-# and every config change that touches struct module invalidates a prebuilt .ko. The stack used
-# to carry several v4l2loopback builds in rover/configs/kernels/ and probe
-# /sys/kernel/debug/tracing/enabled_functions at boot to guess which one to insmod. A module
-# built from the kernel recipe's own sysroot cannot mismatch, so that guessing goes away.
-IMAGE_INSTALL:append:kiwi-xavier = " kernel-module-v4l2loopback"
