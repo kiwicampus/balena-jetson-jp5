@@ -146,7 +146,16 @@ KERNEL_ARGS:remove:kiwi-xavier = "console=null quiet splash"
 # (hence kpti=off rather than nokaslr) and give up only that hardening of it.
 #
 # Spectre is NOT worth disabling: booting with mitigations=off moved the same benchmark by 0.1%.
-KERNEL_ARGS:append:kiwi-xavier = " console=ttyTCU0,115200 loglevel=7 kpti=off"
+# usbcore.usbfs_memory_mb=1000: the stock 16 MB usbfs buffer is not enough for a RealSense
+# streaming depth + infra1 + infra2 + color at once. When it runs out the kernel drops URBs,
+# librealsense hands up partial frames, and the IR images come out torn: rows repeated and
+# sheared, with an unfilled band at the bottom. Seen on kiwibot4F042, where
+# /camera/infra1/image_rect_raw was clean at 15 Hz while /camera/infra2/image_rect_raw was
+# visibly shredded, both reporting a self consistent 640x360 mono8 step 640, so the geometry
+# was right and only the pixels were wrong. Raising this is Intel's own documented remedy and
+# the usual fix on Jetson. It only takes effect when a stream allocates its buffers, so it has
+# to be on the command line rather than set after boot.
+KERNEL_ARGS:append:kiwi-xavier = " console=ttyTCU0,115200 loglevel=7 kpti=off usbcore.usbfs_memory_mb=1000"
 
 # Kernel fix (KASAN, 2026-09-03): tegra210_adsp must not rename its registered platform device; the
 # freed name left platform_device.name dangling -> use-after-free in platform_match -> heap corruption
