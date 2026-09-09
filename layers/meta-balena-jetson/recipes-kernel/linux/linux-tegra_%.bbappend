@@ -274,6 +274,14 @@ do_configure:append:kiwi-xavier(){
     sed -i '/^dtb-\$(BUILD_19x_ENABLE) += tegra194-p2888-0001-p2822-0000.dtb$/a dtb-$(BUILD_19x_ENABLE) += tegra194-agx-kiwi-AGX.dtb' ${S}/nvidia/platform/t19x/galen/kernel-dts/Makefile
 }
 
+# Keep the kernel work dir after the build. rm_work deletes recipe-sysroot-native, which is the
+# cross toolchain that out-of-tree modules have to be built with, so without this the only way
+# to produce a v4l2loopback.ko that matches the kernel we just shipped is to restore the sysroot
+# with a separate bitbake run. CONFIG_MODVERSIONS=y means a module built against any other
+# kernel is rejected with "disagrees about version of symbol module_layout", so the module has to
+# be built here, right after the kernel, from this exact sysroot.
+do_rm_work[noexec] = "1"
+
 do_deploy[nostamp] = "1"
 do_deploy[postfuncs] += "generate_extlinux_conf"
 do_install[depends] += "${@['', '${INITRAMFS_IMAGE}:do_image_complete'][(d.getVar('INITRAMFS_IMAGE', True) or '') != '' and (d.getVar('TEGRA_INITRAMFS_INITRD', True) or '') == "1"]}"
