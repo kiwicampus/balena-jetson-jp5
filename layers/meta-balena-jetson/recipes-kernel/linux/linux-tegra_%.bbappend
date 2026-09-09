@@ -31,100 +31,25 @@ BALENA_CONFIGS[debug_kmemleak] = " \
     CONFIG_PSTORE=n \
 "
 
-# Take ftrace out properly. CONFIG_FUNCTION_TRACER=n above never applied on its own, because
-# STACK_TRACER and FUNCTION_GRAPH_TRACER both `select FUNCTION_TRACER` and a select beats an
-# explicit =n. Unset the selecters first and FUNCTION_TRACER really goes, taking
-# DYNAMIC_FTRACE and FTRACE_MCOUNT_RECORD with it.
+# ftrace is deliberately left ALONE here, no group of any kind, which is the state the tree
+# was in up to 4c62ebe. That is what the prebuilt rover/configs/kernels/v4l2loopback_*.ko
+# were built against, and CONFIG_MODVERSIONS=y means only a kernel with that exact struct
+# module accepts them ("disagrees about version of symbol module_layout").
 #
-# Why this matters beyond the _mcount calls: CONFIG_FTRACE_MCOUNT_RECORD adds the
-# ftrace_callsites fields to struct module, which changes the module_layout symbol CRC. With
-# CONFIG_MODVERSIONS=y that invalidates every out-of-tree .ko built against a kernel with a
-# different answer, which is why rover/configs/kernels/ ended up carrying two v4l2loopback
-# builds and rover/balena_start.sh had to probe
-# /sys/kernel/debug/tracing/enabled_functions to pick one. With ftrace gone there is one
-# kernel and one module.
+# Three states have been measured, module_layout CRC from the kernel's own Module.symvers:
 #
-# This is NOT the same as CONFIG_DYNAMIC_FTRACE=n on its own, which does not link at all:
-# FUNCTION_TRACER=y without DYNAMIC_FTRACE leaves absolute R_AARCH64_ABS32 relocations
-# against __crc_* symbols, and vmlinux is a PIE because CONFIG_RELOCATABLE=y. See 10c309c.
-BALENA_CONFIGS:append = " no_ftrace"
-BALENA_CONFIGS[no_ftrace] = " \
-    CONFIG_STACK_TRACER=n \
-    CONFIG_FUNCTION_GRAPH_TRACER=n \
-    CONFIG_FUNCTION_PROFILER=n \
-    CONFIG_FUNCTION_TRACER=n \
-"
+#   no ftrace group at all (this)            -> ? (the target, 0x789ee19d)
+#   CONFIG_DYNAMIC_FTRACE=y  (0e22581)       -> 0xbc5e0b84  = v4l2loopback_*_dftrace.ko
+#   CONFIG_FUNCTION_TRACER=n (00834fa)       -> 0x7c99a6a2  = no committed module
+#
+# And one that does not build at all: CONFIG_DYNAMIC_FTRACE=n set explicitly (1cdc11e) fails
+# to link vmlinux with "relocation R_AARCH64_ABS32 against __crc_* can not be used when
+# making a shared object". So the only way to reach the original struct module is to say
+# nothing about ftrace and let the tegra defconfig stand.
+#
+# VHE and kpti below do not affect struct module: VHE is an exception-level choice and kpti
+# is a kernel command line argument, so both are safe to keep alongside the original module.
 
-# Note on the CONFIG_FUNCTION_TRACER=n above: it does NOT take effect. CONFIG_STACK_TRACER
-# and CONFIG_FUNCTION_GRAPH_TRACER both `select FUNCTION_TRACER`, and a select overrides an
-# explicit =n. The shipped kernel really runs FUNCTION_TRACER=y, FUNCTION_GRAPH_TRACER=y,
-# STACK_TRACER=y and "# CONFIG_DYNAMIC_FTRACE is not set". To actually disable it you have to
-# unset CONFIG_STACK_TRACER first. Left as-is for now because it is not where the cost was.
-#
-# CONFIG_DYNAMIC_FTRACE is deliberately NOT enabled.
-#
-# It was tried (commit 0e22581) on the theory that FUNCTION_TRACER=y without DYNAMIC_FTRACE
-# leaves an unconditional _mcount call in every kernel function. Measured on 4U081 it bought
-# exactly nothing: an invalid syscall cost 1752 ns with static ftrace and 1749 ns with
-# dynamic, i.e. inside noise. The real costs turned out to be KPTI and EL2/VHE, both handled
-# below.
-#
-# It is worse than neutral, because it changes struct module (adding the ftrace_callsites
-# fields), which changes the module_layout symbol CRC. With CONFIG_MODVERSIONS=y that
-# invalidates every out-of-tree .ko built against the previous kernel, and the prebuilt
-# v4l2loopback modules in rover/configs/kernels/ failed to load on kiwibot4F042 with
-# "v4l2loopback: disagrees about version of symbol module_layout".
-#
-# Do not re-enable it without rebuilding and committing every .ko in rover/configs/kernels/.
-#
-# DO NOT set CONFIG_DYNAMIC_FTRACE=n. It was tried in 1cdc11e and it does not link:
-#
-#   aarch64-poky-linux-ld.bfd: lib/dynamic_debug.o: relocation R_AARCH64_ABS32 against
-#       `__crc_dynamic_debug_exec_queries' can not be used when making a shared object
-#   lib/dynamic_debug.o:(.rodata+0x8): dangerous relocation: unsupported relocation
-#   make: *** [Makefile:1208: vmlinux] Error 1
-#
-# The kernel is linked as a PIE because CONFIG_RELOCATABLE=y (we keep KASLR, see kpti=off
-# below), so with CONFIG_MODVERSIONS=y every __crc_* reference has to be PC relative.
-# FUNCTION_TRACER=y with DYNAMIC_FTRACE=n leaves objects whose __crc_* comes out as an
-# absolute R_AARCH64_ABS32, and the link fails. Three commits' worth of images
-# (2094447, d1c89f5, 5585748) all built with DYNAMIC_FTRACE=y; 1cdc11e is the only
-# configuration that failed, twice, in 81 seconds.
-#
-# So DYNAMIC_FTRACE stays at its Kconfig "default y". The prebuilt out-of-tree modules for
-# this generation are the *_dftrace.ko files in rover/configs/kernels/, and
-# rover/balena_start.sh picks them by probing /sys/kernel/debug/tracing/enabled_functions.
-#
-# If you want ftrace gone for real, the lever is CONFIG_STACK_TRACER=n plus
-# CONFIG_FUNCTION_GRAPH_TRACER=n, which drops FUNCTION_TRACER and takes DYNAMIC_FTRACE with
-# it. That is untested here and changes struct module a third time, so every .ko in
-# rover/configs/kernels/ has to be rebuilt again. Measured benefit of dynamic over static
-# ftrace was nil anyway: an invalid syscall cost 1752 ns static and 1749 ns dynamic.
-
-# Run the kernel at EL1 instead of EL2 by disabling VHE. CONFIRMED on hardware:
-# this removes the L1D wipe, cuts a syscall from 3937 to 1315 cycles, and takes total
-# system CPU on 4U081 from 423% to 374% of 800% with the full ROS stack running.
-# Verified afterwards that the L1D_CACHE_REFILL per syscall is 0.1, identical to JP4,
-# and that IPC is restored (0.20 vs JP4's 0.18). The ROS stack is unaffected: the same
-# error signatures appear in the same proportions as before the change.
-#
-# On this Carmel silicon, an EL0->EL2 exception invalidates the whole L1 data cache.
-# Measured with the PMU on 4U081 (JP5, kernel at EL2 via VHE) against kiwibot4E290
-# (JP4, kernel at EL1, no VHE, no KVM), same MIDR 0x4e0f0040, same 2.2656 GHz.
-# A 32 KB userspace working set (512 lines) walked in a loop, L1D_CACHE_REFILL per pass:
-#
-#                        no syscall   1 syscall per pass
-#   JP4 (EL1)                   1.2                  1.3   <- cache untouched
-#   JP5 (EL2/VHE)               0.9                587.7   <- every line lost
-#
-# Cycles per pass go 650->1526 on JP4 but 604->6113 on JP5. Per invalid syscall the
-# PMU shows L1D_CACHE_REFILL 0.1 (JP4) vs 73.2 (JP5) and STALL_BACKEND 57 vs 1991
-# cycles, while L1D_TLB_REFILL is the same on both (12.4 vs 13.4) - so it is the L1
-# data cache specifically, not the TLB, not the instruction side, not more code.
-#
-# JP4 ships "# CONFIG_ARM64_VHE is not set", which is why it does not pay this. We do
-# not run KVM guests on the robot, so EL2 buys us nothing. With VHE off the kernel
-# boots at EL1 and KVM, if ever used, falls back to nVHE.
 BALENA_CONFIGS:append = " novhe"
 BALENA_CONFIGS[novhe] = " \
     CONFIG_ARM64_VHE=n \
