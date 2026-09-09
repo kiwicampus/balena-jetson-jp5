@@ -53,14 +53,29 @@ BALENA_CONFIGS[debug_kmemleak] = " \
 #
 # Do not re-enable it without rebuilding and committing every .ko in rover/configs/kernels/.
 #
-# It has to be set =n EXPLICITLY: Kconfig has "config DYNAMIC_FTRACE ... default y" and
-# FUNCTION_TRACER=y is forced on by the STACK_TRACER/FUNCTION_GRAPH_TRACER selects above, so
-# merely dropping the BALENA_CONFIGS group leaves it enabled (verified: a build with the group
-# removed still produced CONFIG_DYNAMIC_FTRACE=y).
-BALENA_CONFIGS:append = " no_dynamic_ftrace"
-BALENA_CONFIGS[no_dynamic_ftrace] = " \
-    CONFIG_DYNAMIC_FTRACE=n \
-"
+# DO NOT set CONFIG_DYNAMIC_FTRACE=n. It was tried in 1cdc11e and it does not link:
+#
+#   aarch64-poky-linux-ld.bfd: lib/dynamic_debug.o: relocation R_AARCH64_ABS32 against
+#       `__crc_dynamic_debug_exec_queries' can not be used when making a shared object
+#   lib/dynamic_debug.o:(.rodata+0x8): dangerous relocation: unsupported relocation
+#   make: *** [Makefile:1208: vmlinux] Error 1
+#
+# The kernel is linked as a PIE because CONFIG_RELOCATABLE=y (we keep KASLR, see kpti=off
+# below), so with CONFIG_MODVERSIONS=y every __crc_* reference has to be PC relative.
+# FUNCTION_TRACER=y with DYNAMIC_FTRACE=n leaves objects whose __crc_* comes out as an
+# absolute R_AARCH64_ABS32, and the link fails. Three commits' worth of images
+# (2094447, d1c89f5, 5585748) all built with DYNAMIC_FTRACE=y; 1cdc11e is the only
+# configuration that failed, twice, in 81 seconds.
+#
+# So DYNAMIC_FTRACE stays at its Kconfig "default y". The prebuilt out-of-tree modules for
+# this generation are the *_dftrace.ko files in rover/configs/kernels/, and
+# rover/balena_start.sh picks them by probing /sys/kernel/debug/tracing/enabled_functions.
+#
+# If you want ftrace gone for real, the lever is CONFIG_STACK_TRACER=n plus
+# CONFIG_FUNCTION_GRAPH_TRACER=n, which drops FUNCTION_TRACER and takes DYNAMIC_FTRACE with
+# it. That is untested here and changes struct module a third time, so every .ko in
+# rover/configs/kernels/ has to be rebuilt again. Measured benefit of dynamic over static
+# ftrace was nil anyway: an invalid syscall cost 1752 ns static and 1749 ns dynamic.
 
 # Run the kernel at EL1 instead of EL2 by disabling VHE. CONFIRMED on hardware:
 # this removes the L1D wipe, cuts a syscall from 3937 to 1315 cycles, and takes total
