@@ -1,0 +1,27 @@
+From: Kiwibot JP5 bring-up <pedro@kiwibot.com>
+Date: Wed, 3 Sep 2026 13:35:00 +0000
+Subject: [PATCH] misc: bluedroid_pm: do not kfree the embedded wakeup source on remove
+
+struct bluedroid_pm_data embeds `struct wakeup_source wake_lock` and initialises it with
+wakeup_source_init()/wakeup_source_add(). On kernels >= 5.9 the remove path calls
+wakeup_source_destroy(), which kfree()s the wakeup source: an invalid free 64 bytes inside
+the kmalloc-512 private data (KASAN: double-free or invalid-free in kfree, bluedroid_pm_remove
+-> wakeup_source_destroy). The robot startup runs `modprobe -r bluedroid_pm`, so this
+corrupted the heap on every boot. Undo the wakeup_source_add() instead; the memory is freed
+with the private data by kfree(bluedroid_pm) below.
+---
+ nvidia/drivers/misc/bluedroid_pm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+--- a/nvidia/drivers/misc/bluedroid_pm.c
++++ b/nvidia/drivers/misc/bluedroid_pm.c
+@@ -462,7 +462,8 @@
+ #if LINUX_VERSION_CODE < KERNEL_VERSION(5, 9, 0)
+ 		wakeup_source_trash(&bluedroid_pm->wake_lock);
+ #else
+-		wakeup_source_destroy(&bluedroid_pm->wake_lock);
++		/* wake_lock is embedded: never kfree() it (wakeup_source_destroy would) */
++		wakeup_source_remove(&bluedroid_pm->wake_lock);
+ #endif
+ 		gpio_free(bluedroid_pm->ext_wake);
+ 		remove_bt_proc_interface();

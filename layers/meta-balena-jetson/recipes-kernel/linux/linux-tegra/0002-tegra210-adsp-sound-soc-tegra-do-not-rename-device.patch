@@ -1,0 +1,29 @@
+From: Kiwibot JP5 bring-up <pedro@kiwibot.com>
+Date: Wed, 3 Sep 2026 12:50:00 +0000
+Subject: [PATCH] ASoC: tegra210_adsp (sound/soc/tegra): do not rename the registered adsp_audio device
+
+Same bug as in nvidia/sound/soc/tegra-alt/tegra210_adsp_alt.c, in the copy the kernel actually
+builds (CONFIG_SND_SOC_TEGRA210_ADSP -> sound/soc/tegra/tegra210_adsp.c). dev_set_name() on the
+already registered of_platform child "adsp_audio" kfree()s the old kobject name that
+platform_device.name still points to; every later platform_match() (any module load) then reads
+freed memory (KASAN: use-after-free in strcmp, Freed by tegra210_adsp_audio_probe).
+---
+ sound/soc/tegra/tegra210_adsp.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+--- a/sound/soc/tegra/tegra210_adsp.c
++++ b/sound/soc/tegra/tegra210_adsp.c
+@@ -4511,10 +4511,9 @@
+ 
+ 	pr_info("%s: platform probe started\n", __func__);
+ 
+-	if (dev_set_name(&pdev->dev, "%s", DRV_NAME) < 0) {
+-		dev_err(&pdev->dev, "error in setting adsp device name\n");
+-		return -ENODEV;
+-	}
++	/* Do not dev_set_name() a registered device: it frees the old name that
++	 * platform_device.name still references (use-after-free in platform_match).
++	 * Keep the DT-derived name "adsp_audio". */
+ 
+ 	match = of_match_device(tegra210_adsp_audio_of_match, &pdev->dev);
+ 	if (!match)

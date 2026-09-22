@@ -31,6 +31,30 @@ BALENA_CONFIGS[debug_kmemleak] = " \
     CONFIG_PSTORE=n \
 "
 
+# ftrace is deliberately left ALONE here, no group of any kind, which is the state the tree
+# was in up to 4c62ebe. That is what the prebuilt rover/configs/kernels/v4l2loopback_*.ko
+# were built against, and CONFIG_MODVERSIONS=y means only a kernel with that exact struct
+# module accepts them ("disagrees about version of symbol module_layout").
+#
+# Three states have been measured, module_layout CRC from the kernel's own Module.symvers:
+#
+#   no ftrace group at all (this)            -> ? (the target, 0x789ee19d)
+#   CONFIG_DYNAMIC_FTRACE=y  (0e22581)       -> 0xbc5e0b84  = v4l2loopback_*_dftrace.ko
+#   CONFIG_FUNCTION_TRACER=n (00834fa)       -> 0x7c99a6a2  = no committed module
+#
+# And one that does not build at all: CONFIG_DYNAMIC_FTRACE=n set explicitly (1cdc11e) fails
+# to link vmlinux with "relocation R_AARCH64_ABS32 against __crc_* can not be used when
+# making a shared object". So the only way to reach the original struct module is to say
+# nothing about ftrace and let the tegra defconfig stand.
+#
+# VHE and kpti below do not affect struct module: VHE is an exception-level choice and kpti
+# is a kernel command line argument, so both are safe to keep alongside the original module.
+
+BALENA_CONFIGS:append = " novhe"
+BALENA_CONFIGS[novhe] = " \
+    CONFIG_ARM64_VHE=n \
+"
+
 BALENA_CONFIGS:append = " compat"
 BALENA_CONFIGS[compat] = " \
                 CONFIG_COMPAT=y \
@@ -105,6 +129,39 @@ KERNEL_ARGS:append:jetson-xavier-nx-devkit-emmc = " video=efifb:off nospectre_bh
 KERNEL_ARGS:append:jetson-xavier-nx-devkit = " video=efifb:off nospectre_bhb "
 KERNEL_ARGS += "${@bb.utils.contains('DISTRO_FEATURES','osdev-image',' mminit_loglevel=4 console=tty0 console=ttyTCU0,115200 ',' console=null quiet splash vt.global_cursor_default=0 consoleblank=0',d)} l4tver=${L4T_VERSION} "
 
+# JP5 bring-up: keep the kernel console on the debug UART even on production images, so panics and
+# resets leave a trace on the harness console capture (balenaOS default is console=null quiet splash).
+KERNEL_ARGS:remove:kiwi-xavier = "console=null quiet splash"
+
+# kpti=off: KPTI costs ~2150 cycles on EVERY syscall on this CPU. Measured on 4U081 with a
+# getppid/invalid-syscall microbenchmark using thread CPU time, over three separate boots:
+# an invalid syscall (pure exception entry+exit, no handler work) costs 2691 ns / 6097 cycles
+# with KPTI on and 1752 ns / 3968 cycles with it off. Every ROS node is syscall heavy, so this
+# is a flat tax on the whole stack.
+#
+# This costs us no Meltdown protection. dmesg says "kernel page table isolation forced ON by
+# KASLR", and booting with nokaslr alone makes the kernel decline to enable KPTI at all - so
+# the CPU is either in the kernel's kpti_safe_list or reports ID_AA64PFR0_EL1.CSV3=1, i.e. not
+# susceptible. KPTI was only hardening KASLR against address-leak timing attacks. We keep KASLR
+# (hence kpti=off rather than nokaslr) and give up only that hardening of it.
+#
+# Spectre is NOT worth disabling: booting with mitigations=off moved the same benchmark by 0.1%.
+# usbcore.usbfs_memory_mb=1000: the stock 16 MB usbfs buffer is not enough for a RealSense
+# streaming depth + infra1 + infra2 + color at once. When it runs out the kernel drops URBs,
+# librealsense hands up partial frames, and the IR images come out torn: rows repeated and
+# sheared, with an unfilled band at the bottom. Seen on kiwibot4F042, where
+# /camera/infra1/image_rect_raw was clean at 15 Hz while /camera/infra2/image_rect_raw was
+# visibly shredded, both reporting a self consistent 640x360 mono8 step 640, so the geometry
+# was right and only the pixels were wrong. Raising this is Intel's own documented remedy and
+# the usual fix on Jetson. It only takes effect when a stream allocates its buffers, so it has
+# to be on the command line rather than set after boot.
+KERNEL_ARGS:append:kiwi-xavier = " console=ttyTCU0,115200 loglevel=7 kpti=off usbcore.usbfs_memory_mb=1000"
+
+# Kernel fix (KASAN, 2026-09-03): tegra210_adsp must not rename its registered platform device; the
+# freed name left platform_device.name dangling -> use-after-free in platform_match -> heap corruption
+# panics ~80-100 s after boot. 0002 patches the file the kernel builds; 0001 the tegra-alt duplicate.
+SRC_URI:append:kiwi-xavier = " file://0001-tegra210-adsp-do-not-rename-registered-device.patch file://0002-tegra210-adsp-sound-soc-tegra-do-not-rename-device.patch file://0003-bluedroid_pm-do-not-kfree-embedded-wakeup-source.patch"
+
 generate_extlinux_conf() {
     mkdir -p ${DEPLOY_DIR_IMAGE}/extlinux || true
     kernelRootspec="${KERNEL_ARGS}" ; cat >${DEPLOY_DIR_IMAGE}/extlinux/extlinux.conf << EOF
@@ -150,6 +207,14 @@ do_configure:append:kiwi-xavier(){
     # other entries there get, and kbuild looks for the file one directory level too shallow.
     sed -i '/^dtb-\$(BUILD_19x_ENABLE) += tegra194-p2888-0001-p2822-0000.dtb$/a dtb-$(BUILD_19x_ENABLE) += tegra194-agx-kiwi-AGX.dtb' ${S}/nvidia/platform/t19x/galen/kernel-dts/Makefile
 }
+
+# Keep the kernel work dir after the build. rm_work deletes recipe-sysroot-native, which is the
+# cross toolchain that out-of-tree modules have to be built with, so without this the only way
+# to produce a v4l2loopback.ko that matches the kernel we just shipped is to restore the sysroot
+# with a separate bitbake run. CONFIG_MODVERSIONS=y means a module built against any other
+# kernel is rejected with "disagrees about version of symbol module_layout", so the module has to
+# be built here, right after the kernel, from this exact sysroot.
+do_rm_work[noexec] = "1"
 
 do_deploy[nostamp] = "1"
 do_deploy[postfuncs] += "generate_extlinux_conf"
