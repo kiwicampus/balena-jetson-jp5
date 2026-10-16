@@ -18,7 +18,7 @@ after build an image you need to link it to our balena fleet, do it using this c
 source /home/wilmer/Documents/Kronos-Project/rover/configs/session_credentials.sh
 balena login --token $BALENA_TOKEN
 IMAGE_PATH="/home/wilmer/balena-jetson-jp5/build/tmp/deploy/images/kiwi-xavier/balena-image-kiwi-xavier.balenaos-img"
-balena os configure $IMAGE_PATH --fleet RKiwi-4X-Develop
+balena os configure $IMAGE_PATH --fleet RKiwi-4X-JP5
 ```
 
 
