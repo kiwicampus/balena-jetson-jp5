@@ -15,6 +15,9 @@ SRC_URI:append:kiwi-xavier = " \
     file://tegra194-agx-kiwi-AGX.dts \
     file://tegra194-a02-bpmp-p2888-a04-kiwi.dts \
 "
+# Kiwi CAN/I2S2/PWM pad config. :jetson-xavier also matches kiwi-xavier (its MACHINEOVERRIDES
+# include jetson-xavier), so this covers the devkit and the kiwi board.
+SRC_URI:append:jetson-xavier = " file://tegra194-kiwi-pinmux.dtsi"
 
 
 BALENA_CONFIGS:remove = " mdraid"
@@ -223,3 +226,12 @@ do_install[depends] += "${@['', '${INITRAMFS_IMAGE}:do_image_complete'][(d.getVa
 # These are needed by tegraflash during signing
 OVERLAY_DTB_FILE:append:jetson-agx-orin-devkit = " tegra234-p3737-overlay-pcie.dtbo,tegra234-p3737-audio-codec-rt5658-40pin.dtbo,tegra234-p3737-a03-overlay.dtbo,tegra234-p3737-a04-overlay.dtbo,tegra234-p3737-camera-dual-imx274-overlay.dtbo,AcpiBoot.dtbo,L4TConfiguration.dtbo,L4TRootfsInfo.dtbo,L4TRootfsABInfo.dtbo,L4TRootfsBrokenInfo.dtbo"
 
+
+# Devkit: append the kiwi pad config to the stock top-level dts, so the DTB name and the
+# flash/boot paths stay the same. On kiwi-xavier this also lands in the (unused) stock dtb.
+do_configure:append:jetson-xavier(){
+    dtsdir=${S}/nvidia/platform/t19x/galen/kernel-dts
+    cp ${WORKDIR}/tegra194-kiwi-pinmux.dtsi ${dtsdir}/
+    grep -q 'tegra194-kiwi-pinmux.dtsi' ${dtsdir}/tegra194-p2888-0001-p2822-0000.dts || \
+        echo '#include "tegra194-kiwi-pinmux.dtsi"' >> ${dtsdir}/tegra194-p2888-0001-p2822-0000.dts
+}
